@@ -13,6 +13,11 @@
 
 suppressPackageStartupMessages({ library(cmdstanr); library(posterior) })
 
+# Find Stan, whether we are in RStudio, in a terminal, or inside a job.
+# See src/stan_setup.R for why this is not left to the person running it.
+source("src/stan_setup.R")
+ensure_stan_is_found()
+
 #' Fit the model to a prepared modelling dataset.
 #'
 #' @param dat    list with N, J, K, P, C, topic, y, x  (see prepare_stan_data)

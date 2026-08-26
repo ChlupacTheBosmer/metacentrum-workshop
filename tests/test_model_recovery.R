@@ -14,6 +14,12 @@
 # =============================================================================
 
 suppressPackageStartupMessages({ library(cmdstanr); library(posterior) })
+
+# Find Stan, the same way every other script does.
+source("config.R")
+source("src/stan_setup.R")
+ensure_stan_is_found()
+
 set.seed(42)
 
 args   <- commandArgs(trailingOnly = TRUE)
