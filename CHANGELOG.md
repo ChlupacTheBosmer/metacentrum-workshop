@@ -847,3 +847,51 @@ because the final message had a hardcoded path rather than the variable.
 ### Verified after all changes
 No old filename survives anywhere in the repository. A replicate fit runs
 on the cluster using `model_binary`: 2.3 min, 0 divergences.
+
+---
+
+## Session 14 — 2026-08-26 (GitHub, and per-user paths)
+
+### ⚠ A collision bug, found while preparing the participant setup
+`cfg$storage$results_dir` pointed at the presenter's directory. Five people
+running the same job array would each have written `rep_001.rds` to the same
+path, silently overwriting one another.
+
+`config.R` now separates the two kinds of path explicitly:
+
+| kind | example | who writes |
+|---|---|---|
+| shared, read only | `artifacts_dir`, `shared_rlibs`, `image_path` | presenter only |
+| yours, writable | `repo_dir`, `results_dir` | built from `$USER` |
+
+Verified on the cluster: as `chlupp` the repo and results resolve under
+`/storage/plzen1/home/chlupp/metacentrum-workshop`, while artifacts still
+point at the shared copy.
+
+### BUILT: `bootstrap.sh`
+One line for participants, in a terminal or in OnDemand's terminal:
+
+```
+curl -sL https://raw.githubusercontent.com/ChlupacTheBosmer/metacentrum-workshop/main/bootstrap.sh | bash
+```
+
+Clones to `/storage/plzen1/home/<username>/metacentrum-workshop`, the same
+place for everybody, so every path on a slide works on every screen. Makes
+`results/` and `logs/`. Safe to run twice: it pulls instead of re-cloning.
+Checks the volume and the home directory exist first and explains what to
+do if not.
+
+**Tested end to end from GitHub on the real cluster**: clean clone, 12
+sections present, `results/` created, config resolving per user.
+
+### Published
+<https://github.com/ChlupacTheBosmer/metacentrum-workshop> — 63 files.
+`data/big` contents excluded, `README.md` inside it kept. Secrets scan run
+before the first push and passed.
+
+`.gitignore` extended for the things each participant generates:
+`results/`, `logs/`, `my_reviews.csv`, `my_embeddings.rds`, `Rplots.pdf`.
+
+### Slides
+Now 107. A bootstrap slide added to the Login section, and everything
+renumbered.

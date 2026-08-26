@@ -39,7 +39,27 @@ proves everything works.
 
 Do not paste the key into a shared document.
 
-## 4. Nothing to install
+## 4. Get the workshop files
+
+Not required before the day, but it saves five minutes if done in advance.
+
+In a terminal on MetaCentrum, or in the terminal inside OnDemand
+(Clusters, then Shell Access), paste this one line:
+
+```bash
+curl -sL https://raw.githubusercontent.com/ChlupacTheBosmer/metacentrum-workshop/main/bootstrap.sh | bash
+```
+
+Everything lands in the same place for everybody:
+
+```
+/storage/plzen1/home/<your username>/metacentrum-workshop
+```
+
+It is safe to run more than once. If the files are already there it just
+updates them.
+
+## 5. Nothing to install
 
 No R on the laptop, no packages, no SSH client. Everything runs in a
 browser or on the cluster.

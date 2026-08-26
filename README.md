@@ -6,7 +6,16 @@ For people who know R and statistics, and have not used a cluster.
 
 ## Start here
 
-Participants: read [setup.md](setup.md) before the day.
+On MetaCentrum, in a terminal or in OnDemand's terminal:
+
+```bash
+curl -sL https://raw.githubusercontent.com/ChlupacTheBosmer/metacentrum-workshop/main/bootstrap.sh | bash
+```
+
+That puts everything in `/storage/plzen1/home/<username>/metacentrum-workshop`,
+the same place for everybody, and makes a `results/` folder of your own.
+
+Participants: also read [setup.md](setup.md) before the day.
 
 ## The sections
 
