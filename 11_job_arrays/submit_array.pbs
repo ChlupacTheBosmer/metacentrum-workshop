@@ -51,7 +51,13 @@
 # ------------------------------------------------------------
 
 # Where the workshop files live.
-REPO=/storage/plzen1/home/chlupp/workshop/repo
+#
+# $PBS_O_WORKDIR is set by the scheduler to the directory you were standing
+# in when you typed qsub. Since you submit from the repository root, that is
+# exactly the right place, and it works for everybody without editing.
+#
+# Do not hardcode a path here. It would be somebody else's username.
+REPO="$PBS_O_WORKDIR"
 
 # The container that holds R and every package we need.
 IMAGE=/storage/plzen1/home/chlupp/workshop/images/workshop-r.sif
