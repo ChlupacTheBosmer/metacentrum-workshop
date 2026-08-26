@@ -1,0 +1,96 @@
+#!/bin/bash
+#
+# ============================================================
+#  04_jobs/first_job.pbs
+#  The smallest possible job
+# ============================================================
+#
+#  WHAT A JOB IS
+#
+#  You are logged in to a frontend. The frontend does not do your
+#  computing. It takes your request and passes it to a scheduler.
+#  The scheduler finds a free machine and runs your work there.
+#
+#  A "job" is that request: a script, plus a note saying how much
+#  hardware it needs and for how long.
+#
+#  HOW TO SEND IT
+#
+#      qsub 04_jobs/first_job.pbs
+#
+#  qsub prints a job number, for example:
+#
+#      23130368.pbs-m1.metacentrum.cz
+#
+#  That number is how you refer to the job afterwards.
+#
+# ============================================================
+
+
+# ------------------------------------------------------------
+#  THE REQUEST
+# ------------------------------------------------------------
+
+# A name for the job.
+#PBS -N my_first_job
+
+# The hardware. Read it as one sentence:
+#   "one machine, with 1 core, 1 GB of memory,
+#    and 1 GB of temporary local disk"
+#PBS -l select=1:ncpus=1:mem=1gb:scratch_local=1gb
+
+# The time limit. 5 minutes is plenty for this.
+#
+# Important: this is a hard limit. At 5 minutes the job is killed,
+# finished or not. But asking for far more than you need also
+# hurts you, because the scheduler has a harder time finding a
+# gap that long, so you wait longer to start.
+#PBS -l walltime=00:05:00
+
+
+# ------------------------------------------------------------
+#  THE WORK
+# ------------------------------------------------------------
+
+# Everything below runs on a compute node, not on the frontend.
+
+echo "Hello from a compute node."
+echo ""
+
+# hostname prints the name of the machine we landed on.
+# It will be something like zenon23 or turin7. Those names are
+# the clusters: zenon, turin, adan and so on.
+echo "This job is running on: $(hostname)"
+echo ""
+
+# The scheduler gives every job a private temporary directory on
+# the local disk of the machine. Its path is in $SCRATCHDIR.
+# It is fast, and it is deleted when the job ends.
+echo "My private scratch directory is: $SCRATCHDIR"
+echo ""
+
+# $PBS_O_WORKDIR is the directory you were in when you typed qsub.
+echo "I was submitted from: $PBS_O_WORKDIR"
+echo ""
+
+# Prove we really waited and ran somewhere.
+echo "The time here is: $(date)"
+echo ""
+echo "Sleeping for 20 seconds so you can see the job in qstat."
+sleep 20
+
+echo "Done."
+
+
+# ============================================================
+#  WHERE DID THE OUTPUT GO?
+#
+#  Anything the job prints is saved to a file in the directory
+#  you submitted from, named after the job:
+#
+#      my_first_job.o23130368     what it printed
+#      my_first_job.e23130368     any error messages
+#
+#  DOCUMENTATION
+#      https://docs.metacentrum.cz/en/docs/computing/run-basic-job
+# ============================================================

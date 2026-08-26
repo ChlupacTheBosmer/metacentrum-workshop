@@ -1,0 +1,241 @@
+{
+  "_comment": [
+    "SINGLE SOURCE OF TRUTH for the experimental design.",
+    "Both src/gen_prompts.R and src/gen_prompts.py read THIS file, so the R and",
+    "Python paths (decision D3) are guaranteed to build identical prompts.",
+    "Edit the design here and nowhere else."
+  ],
+  "ratings": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "rating_labels": {
+    "1": "deeply dissatisfied",
+    "2": "dissatisfied",
+    "3": "mixed feelings, neither satisfied nor dissatisfied",
+    "4": "satisfied",
+    "5": "delighted"
+  },
+  "_expressiveness_comment": [
+    "This is the DESIGNED between-topic heterogeneity that makes the random",
+    "slopes in the Stan model earn their keep. Reviewers in 'explicit' topics",
+    "state their verdict outright, so the rating is easy to read off the text.",
+    "Reviewers in 'understated' topics mostly describe, leaving the verdict",
+    "implied - so the same embedding geometry carries LESS rating signal.",
+    "We therefore KNOW the true slope varies by topic, and can check whether",
+    "the hierarchical model recovers that. That is the point of the exercise."
+  ],
+  "expressiveness": {
+    "explicit": "State your verdict openly and use plainly evaluative language ('I love it', 'total waste of money'). Make your overall opinion unmistakable.",
+    "moderate": "Mix concrete description of the product with your opinion. State your verdict, but do not dwell on it.",
+    "understated": "Describe your experience factually and let the verdict remain implied. Avoid overtly evaluative adjectives. Understatement only."
+  },
+  "topics": [
+    {
+      "topic": "wireless_headphones",
+      "label": "wireless over-ear headphones",
+      "expressiveness": "explicit"
+    },
+    {
+      "topic": "espresso_machine",
+      "label": "a home espresso machine",
+      "expressiveness": "explicit"
+    },
+    {
+      "topic": "running_shoes",
+      "label": "a pair of running shoes",
+      "expressiveness": "explicit"
+    },
+    {
+      "topic": "office_chair",
+      "label": "an ergonomic office chair",
+      "expressiveness": "explicit"
+    },
+    {
+      "topic": "robot_vacuum",
+      "label": "a robot vacuum cleaner",
+      "expressiveness": "explicit"
+    },
+    {
+      "topic": "electric_kettle",
+      "label": "an electric kettle",
+      "expressiveness": "explicit"
+    },
+    {
+      "topic": "mechanical_keyboard",
+      "label": "a mechanical keyboard",
+      "expressiveness": "explicit"
+    },
+    {
+      "topic": "winter_jacket",
+      "label": "a winter jacket",
+      "expressiveness": "explicit"
+    },
+    {
+      "topic": "smartphone",
+      "label": "a mid-range smartphone",
+      "expressiveness": "moderate"
+    },
+    {
+      "topic": "dishwasher",
+      "label": "a freestanding dishwasher",
+      "expressiveness": "moderate"
+    },
+    {
+      "topic": "hiking_backpack",
+      "label": "a 40-litre hiking backpack",
+      "expressiveness": "moderate"
+    },
+    {
+      "topic": "electric_toothbrush",
+      "label": "an electric toothbrush",
+      "expressiveness": "moderate"
+    },
+    {
+      "topic": "air_purifier",
+      "label": "a room air purifier",
+      "expressiveness": "moderate"
+    },
+    {
+      "topic": "camping_tent",
+      "label": "a two-person camping tent",
+      "expressiveness": "moderate"
+    },
+    {
+      "topic": "bluetooth_speaker",
+      "label": "a portable Bluetooth speaker",
+      "expressiveness": "moderate"
+    },
+    {
+      "topic": "sewing_machine",
+      "label": "a domestic sewing machine",
+      "expressiveness": "moderate"
+    },
+    {
+      "topic": "garden_hose",
+      "label": "a retractable garden hose",
+      "expressiveness": "moderate"
+    },
+    {
+      "topic": "printer_ink",
+      "label": "a set of printer ink cartridges",
+      "expressiveness": "understated"
+    },
+    {
+      "topic": "usb_hub",
+      "label": "a USB-C docking hub",
+      "expressiveness": "understated"
+    },
+    {
+      "topic": "desk_lamp",
+      "label": "an LED desk lamp",
+      "expressiveness": "understated"
+    },
+    {
+      "topic": "bed_sheets",
+      "label": "a set of cotton bed sheets",
+      "expressiveness": "understated"
+    },
+    {
+      "topic": "kitchen_scale",
+      "label": "a digital kitchen scale",
+      "expressiveness": "understated"
+    },
+    {
+      "topic": "extension_cable",
+      "label": "a surge-protected extension cable",
+      "expressiveness": "understated"
+    },
+    {
+      "topic": "storage_boxes",
+      "label": "a set of stackable storage boxes",
+      "expressiveness": "understated"
+    },
+    {
+      "topic": "water_filter",
+      "label": "a replacement water filter cartridge",
+      "expressiveness": "understated"
+    }
+  ],
+  "system_prompt": "You are generating synthetic customer reviews for a statistics teaching dataset. Output ONLY the review text. No preamble, no title, no quotation marks, no markdown, no star rating, and never state the number of stars in digits. Write 40-80 words in plain prose.",
+  "user_template": "Write a customer review of {product}. The reviewer is {rating_label}. You are {persona}. Say something specific about {aspect}. {expressiveness_instruction}",
+  "generation": {
+    "temperature": 1.0,
+    "max_tokens": 220,
+    "model_note": "Model ID comes from config.R / config.sh, never from this file."
+  },
+  "live_slice": {
+    "_comment": "What each participant generates live in Block 2 (handover 2.3).",
+    "n_topics": 3,
+    "ratings": [
+      1,
+      5
+    ],
+    "n_replicates": 10
+  },
+  "full_corpus": {
+    "_comment": "Decision D4 = 50000. 25 topics x 5 ratings x 400 replicates.",
+    "n_replicates_per_cell": 400
+  },
+  "design_version": 2,
+  "_v2_note": [
+    "v1 produced ~70% EXACT DUPLICATE texts: every replicate in a topic x rating",
+    "cell got a byte-identical prompt, and the model collapses to a handful of",
+    "completions. Measured: 20 rows per cell, 6 distinct texts.",
+    "v2 fixes it two ways, both verified: (a) a per-request `seed` (identical",
+    "prompt + varying seed gave 5/5 distinct); (b) a reviewer PERSONA and a review",
+    "ASPECT injected per replicate (gave 6/6 distinct, and far more realistic",
+    "within-cell variation).",
+    "IMPORTANT: persona and aspect are assigned from the replicate index alone,",
+    "using strides coprime with the list lengths, so they are BALANCED across",
+    "topic and rating. They are nuisance variation, not confounders - the",
+    "designed structure still lives entirely in topic, rating and expressiveness."
+  ],
+  "personas": [
+    "a graphic designer",
+    "a night-shift nurse",
+    "a retired teacher",
+    "a PhD student",
+    "a home-office accountant",
+    "a parent of two small children",
+    "a keen amateur cook",
+    "a long-distance commuter",
+    "a freelance photographer",
+    "a semi-retired engineer",
+    "a university librarian",
+    "a weekend hiker",
+    "a small-business owner",
+    "a music teacher",
+    "a physiotherapist",
+    "a first-year apprentice",
+    "a frequent business traveller",
+    "a allotment gardener",
+    "a part-time bartender",
+    "a veterinary assistant"
+  ],
+  "aspects": [
+    "how well it was built",
+    "whether it was worth the price",
+    "how easy it was to set up",
+    "how it has held up over several months",
+    "the packaging and delivery",
+    "dealing with the manufacturer's support",
+    "how it looks in daily use",
+    "how noisy it is",
+    "whether the size suited you",
+    "how clear the instructions were",
+    "how it compares to the one it replaced",
+    "how it fits into your daily routine",
+    "what happened the first week you owned it",
+    "whether you would buy it again",
+    "how it performed under heavy use",
+    "a small detail nobody mentions in reviews",
+    "how it handled a problem you ran into",
+    "what your family thought of it",
+    "whether the description matched reality",
+    "how much you actually use it"
+  ]
+}

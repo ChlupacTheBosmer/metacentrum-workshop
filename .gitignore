@@ -1,0 +1,35 @@
+# ---- secrets: never, under any circumstance -------------------------------
+.Renviron
+.env
+*.key
+*_key.txt
+secrets*
+
+# ---- large pre-generated artifacts (A1-A6) --------------------------------
+# These live on MetaCentrum storage, not in git. data/big/README.md tells
+# participants how to fetch them.
+data/big/**
+!data/big/README.md
+
+# ---- R / Python noise ------------------------------------------------------
+.Rhistory
+.RData
+.Rproj.user/
+__pycache__/
+*.pyc
+*.rds.tmp
+
+# ---- Stan build products ---------------------------------------------------
+# A compiled model is a few MB and only runs on the machine that built it.
+# The shared cluster copy lives in the artifacts directory instead.
+*.exe
+*.o
+*.hpp
+09_model/model
+
+# ---- things each participant generates for themselves -----------------------
+results/
+logs/
+my_reviews.csv
+my_embeddings.rds
+Rplots.pdf

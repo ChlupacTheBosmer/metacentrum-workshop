@@ -1,0 +1,134 @@
+# =============================================================================
+# workshop-r.def - the workshop's R environment as a Singularity/Apptainer image
+# =============================================================================
+# WHY THIS EXISTS (this is the teaching point, not just plumbing):
+#
+# MetaCentrum's bare `r/` module ships base R and *nothing else* - we checked,
+# and all 16 packages the workshop needs are absent. MetaCentrum's prepared
+# RStudio image is much better, but still has no rstan/cmdstanr/posterior/loo/
+# bayesplot/uwot/future/furrr. So Blocks 2-3 would work and Block 4 would not.
+#
+# The general lesson for anyone running R on a cluster: the software you get is
+# whatever the admins installed, it changes under you, and `install.packages()`
+# into your home directory is slow, fragile, and different on every node. A
+# container fixes all three at once - you pin the R version AND every package
+# version into one file, and that file is what runs, identically, in RStudio on
+# OnDemand and in a thousand PBS jobs.
+#
+# BUILD (on builder.metacentrum.cz, which exists for exactly this):
+#   export SINGULARITY_TMPDIR=/storage/plzen1/home/$USER/workshop/tmp
+#   singularity build --fakeroot workshop-r.sif workshop-r.def
+#
+# Base image: rocker/tidyverse pins R itself and already carries RStudio Server
+# plus the tidyverse, which is the same lineage as MetaCentrum's own RStudio
+# images - so the OnDemand RStudio app behaves the same way with ours.
+# =============================================================================
+
+Bootstrap: docker
+From: rocker/tidyverse:4.5.1
+
+%labels
+    Purpose   From Laptop to Cluster - MetaCentrum R workshop
+    R_version 4.5.1
+    Contains  tidyverse, httr2, cmdstanr + CmdStan, posterior, loo, bayesplot, uwot, future/furrr
+
+%environment
+    # cmdstanr looks here for the CmdStan toolchain.
+    export CMDSTAN=/opt/cmdstan/cmdstan
+    export R_LIBS_SITE=/usr/local/lib/R/site-library
+    # Keep a stray personal library from silently shadowing the pinned one.
+    export R_LIBS_USER=/dev/null
+
+%post
+    set -e
+    export DEBIAN_FRONTEND=noninteractive
+
+    # ---- system build tools --------------------------------------------------
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        build-essential g++ make curl git \
+        libcurl4-openssl-dev libssl-dev libxml2-dev libgit2-dev
+    rm -rf /var/lib/apt/lists/*
+
+    # ---- R packages ----------------------------------------------------------
+    # Explicit repos: the stan-dev r-universe carries cmdstanr, which is not on
+    # CRAN. Everything else comes from the frozen CRAN mirror in the base image.
+    Rscript -e 'options(repos = c(
+                  stan = "https://stan-dev.r-universe.dev",
+                  CRAN = "https://cloud.r-project.org"));
+                install.packages(c(
+                  "cmdstanr",      # raw-Stan interface (decision D1: no brms)
+                  "posterior",     # draws objects, rhat/ess summaries
+                  "loo",           # PSIS-LOO model comparison
+                  "bayesplot",     # posterior visual checks
+                  "httr2",         # the AI API client
+                  "jsonlite",
+                  "uwot",          # UMAP for the Block 3 EDA
+                  "future", "furrr",  # Level-1 parallelism (Block 4)
+                  "arrow"          # parquet artifacts
+                ), Ncpus = 4)'
+
+    # Fail the BUILD, loudly, if anything did not install. A container that is
+    # silently missing a package is worse than no container at all.
+    Rscript -e 'pk <- c("cmdstanr","posterior","loo","bayesplot","httr2",
+                        "jsonlite","uwot","future","furrr","arrow",
+                        "dplyr","ggplot2","readr","tidyr");
+                miss <- pk[!vapply(pk, requireNamespace, logical(1), quietly = TRUE)];
+                if (length(miss)) { cat("MISSING:", miss, "\n"); quit(status = 1) };
+                cat("all R packages present\n")'
+
+    # ---- CmdStan -------------------------------------------------------------
+    # Built once here, at image build time, so no participant ever waits for a
+    # Stan toolchain to compile during the workshop.
+    mkdir -p /opt/cmdstan
+    Rscript -e 'cmdstanr::install_cmdstan(dir = "/opt/cmdstan", cores = 4, quiet = FALSE)'
+
+    # install_cmdstan() creates a VERSIONED directory - /opt/cmdstan/cmdstan-2.39.0 -
+    # so a hardcoded $CMDSTAN goes stale the moment Stan releases a new version.
+    # Resolve the real directory in SHELL (not in R: cmdstan_path() only knows the
+    # location inside the R session that ran the install, so a fresh Rscript
+    # cannot see it) and pin a stable symlink to it.
+    #   Both of our first two build failures were on exactly this line, each time
+    #   AFTER the 20-minute CmdStan compile had already succeeded. Worth showing
+    #   participants: the expensive step working is not the same as the build working.
+    CMDSTAN_REAL="$(ls -d /opt/cmdstan/cmdstan-*/ 2>/dev/null | sort -V | tail -1)"
+    if [ -z "$CMDSTAN_REAL" ]; then echo "FATAL: no /opt/cmdstan/cmdstan-* directory"; exit 1; fi
+    CMDSTAN_REAL="${CMDSTAN_REAL%/}"
+    echo "CmdStan really installed at: $CMDSTAN_REAL"
+    ln -sfn "$CMDSTAN_REAL" /opt/cmdstan/cmdstan
+    test -x /opt/cmdstan/cmdstan/bin/stanc || { echo "FATAL: stanc missing under the symlink"; exit 1; }
+
+    # Prove the toolchain actually compiles and samples, now, at build time.
+    # set_cmdstan_path() is explicit - we do not rely on cmdstanr picking up an
+    # environment variable at the right moment.
+    Rscript -e 'library(cmdstanr);
+                set_cmdstan_path("/opt/cmdstan/cmdstan");
+                cat("cmdstan version:", cmdstan_version(), "\n");
+                f <- tempfile(fileext = ".stan");
+                writeLines(c("data { int<lower=0> N; }",
+                             "parameters { real mu; }",
+                             "model { mu ~ normal(0, 1); }"), f);
+                m <- cmdstan_model(f);
+                fit <- m$sample(data = list(N = 1), chains = 1,
+                                iter_warmup = 100, iter_sampling = 100,
+                                refresh = 0, show_messages = FALSE);
+                cat("SMOKE TEST OK - mean mu =", round(mean(fit$draws("mu")), 3), "\n")'
+
+    chmod -R a+rX /opt/cmdstan
+
+%test
+    # Runs automatically at the end of `singularity build`.
+    Rscript -e 'cat(R.version.string, "\n")'
+    Rscript -e 'library(cmdstanr); set_cmdstan_path("/opt/cmdstan/cmdstan");
+                cat("cmdstan", cmdstan_version(), "OK\n")'
+
+%runscript
+    exec R --no-save "$@"
+
+%help
+    R 4.5.1 for the "From Laptop to Cluster" MetaCentrum workshop.
+
+      singularity exec workshop-r.sif Rscript myscript.R
+      singularity shell workshop-r.sif
+
+    CmdStan lives at $CMDSTAN (/opt/cmdstan/cmdstan) and is already built.

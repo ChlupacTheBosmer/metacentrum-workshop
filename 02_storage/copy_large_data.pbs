@@ -1,0 +1,77 @@
+#!/bin/bash
+#
+# ============================================================
+#  02_storage/copy_large_data.pbs
+#  Copying a lot of data, the way you are supposed to
+# ============================================================
+#
+#  WHY NOT JUST COPY IT ON THE FRONTEND?
+#
+#  Because the frontend is shared by everybody. If ten people copy
+#  a terabyte each, nobody can log in.
+#
+#  The documentation is blunt about it:
+#
+#      "don't use front-end servers for anything else than moving
+#       several small files! Submit a regular job and/or take an
+#       interactive job instead"
+#
+#      https://docs.metacentrum.cz/en/docs/data/large-data
+#
+#  So: a few small files, do it on the frontend. Anything big,
+#  send it as a job. That is what this file is.
+#
+#  HOW TO USE IT
+#
+#      1. change the two paths below
+#      2. qsub 02_storage/copy_large_data.pbs
+#
+# ============================================================
+
+
+# ------------------------------------------------------------
+#  The lines starting with #PBS are instructions to the scheduler.
+#  To the shell they are just comments. To PBS they are the job
+#  request. They must come before any real command.
+# ------------------------------------------------------------
+
+# A name, so you can recognise the job in the queue.
+#PBS -N copy_data
+
+# What the job needs:
+#   select=1        one machine
+#   ncpus=1         one processor core (copying is not parallel)
+#   mem=4gb         memory
+# Copying needs almost no CPU. Asking for little means you start sooner.
+#PBS -l select=1:ncpus=1:mem=4gb
+
+# The longest this job may run. If it takes longer, it is killed.
+# Copying a lot of data is slow, so be generous here.
+#PBS -l walltime=04:00:00
+
+
+# ------------------------------------------------------------
+#  From here down it is an ordinary shell script.
+# ------------------------------------------------------------
+
+# Where the data is now, and where it should end up.
+# Change these two lines.
+SOURCE="/storage/plzen1/home/$USER/my_big_folder"
+TARGET="/storage/brno2/home/$USER/my_big_folder"
+
+echo "Copying"
+echo "  from: $SOURCE"
+echo "  to:   $TARGET"
+echo ""
+
+# "rsync" is better than "cp" for large copies:
+#   -a   keep permissions and timestamps
+#   -v   say what it is doing
+#   -h   print sizes in a readable way
+#
+# rsync can also be run again safely. If it is interrupted,
+# running it a second time copies only what is still missing.
+rsync -avh "$SOURCE/" "$TARGET/"
+
+echo ""
+echo "Finished."

@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -N ws_rlibs
+#PBS -l select=1:ncpus=4:mem=16gb:scratch_local=20gb
+#PBS -l walltime=02:00:00
+# Builds the workshop's shared R library + CmdStan into plzen1, inside the
+# image OnDemand RStudio uses. Run once by the presenter.
+IMG=/storage/singularity.metacentrum.cz/RStudio/.RStudio-geospatial-4.5.1.upd3.SIF
+REPO=/storage/plzen1/home/chlupp/workshop
+echo "host=$(hostname -f) scratch=$SCRATCHDIR"
+echo "=== R packages ==="
+singularity exec -B /storage "$IMG" Rscript "$REPO/pbs/build_shared_rlibs.R" 2>&1 | tail -40
+echo "=== CmdStan ==="
+singularity exec -B /storage "$IMG" Rscript "$REPO/pbs/build_shared_cmdstan.R" 2>&1 | tail -25
+echo "=== permissions ==="
+chmod -R a+rX "$REPO/Rlibs" "$REPO/cmdstan" 2>/dev/null
+echo BUILD_SHARED_ENV_DONE

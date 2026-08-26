@@ -1,0 +1,1696 @@
+<title>MetaCentrum Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+
+<style>
+  /* White deck, painted explicitly. Two type sizes only. */
+  :root{
+    --paper:#ffffff;
+    --ink:#1c1b19;
+    --ink-soft:#5f5b55;
+    --rule:#e2ded8;
+    --accent:#c2521a;
+    --accent-bg:#fbf1ea;
+    --size-head:44px;
+    --size-body:26px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:var(--size-body);
+    line-height:1.5;
+  }
+  .slide{
+    min-height:100vh;
+    padding:6vh 7vw 9vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:26px;
+    border-bottom:1px solid var(--rule);
+    position:relative;
+  }
+  h2{
+    font-size:var(--size-head);
+    line-height:1.15;
+    font-weight:600;
+    margin:0;
+    text-wrap:balance;
+    max-width:24ch;
+  }
+  .slide p,.slide li,.slide td,.slide th,.slide .label,.slide .num{font-size:var(--size-body);}
+  p{margin:0;max-width:62ch;}
+  .body{display:flex;flex-direction:column;gap:20px;}
+  ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:12px;max-width:62ch;}
+  li::marker{color:var(--accent);}
+  strong{font-weight:600;}
+  em{font-style:normal;color:var(--accent);font-weight:600;}
+  a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;}
+  code,.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1em;}
+  code{background:var(--accent-bg);padding:2px 7px;border-radius:3px;}
+  pre{margin:0;background:var(--accent-bg);border-left:3px solid var(--accent);padding:18px 22px;overflow-x:auto;max-width:100%;}
+  pre code{background:none;padding:0;}
+  /* Section label carries the file currently on screen. */
+  .label{
+    color:var(--accent);
+    font-weight:600;
+    letter-spacing:.05em;
+    margin:0;
+    font-family:"IBM Plex Mono",monospace;
+  }
+  .wrap{overflow-x:auto;max-width:100%;}
+  table{border-collapse:collapse;font-variant-numeric:tabular-nums;}
+  th,td{text-align:left;padding:8px 26px 8px 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+  th{font-weight:600;}
+  td.n,th.n{text-align:right;padding-right:26px;}
+  .quiet{color:var(--ink-soft);}
+  .num{position:absolute;bottom:3vh;right:7vw;color:var(--ink-soft);font-family:"IBM Plex Mono",monospace;}
+  @media (max-width:820px){
+    :root{--size-head:34px;--size-body:21px;}
+    .slide{padding:5vh 7vw 8vh;}
+  }
+  @media print{.slide{min-height:auto;page-break-after:always;border:none;}}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:4px;}
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto !important;}}
+  html{scroll-behavior:smooth;}
+</style>
+
+<div class="deck">
+
+<!-- ===================== 1 INTRODUCTION ===================== -->
+
+<section class="slide">
+  <p class="label">INTRODUCTION</p>
+  <h2>MetaCentrum Workshop</h2>
+  <div class="body">
+    <p>Running R on shared Czech academic computers.</p>
+  </div>
+  <p class="num">1</p>
+</section>
+
+<section class="slide">
+  <p class="label">INTRODUCTION</p>
+  <h2>Today</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><td>1</td><td>Login from a terminal</td></tr>
+      <tr><td>2</td><td>Storage</td></tr>
+      <tr><td>3</td><td>OnDemand</td></tr>
+      <tr><td>4</td><td>Jobs</td></tr>
+      <tr><td>5</td><td>RStudio</td></tr>
+      <tr><td>6</td><td>Interactive job</td></tr>
+      <tr><td>7</td><td>AI services</td></tr>
+      <tr><td>8</td><td>Embeddings</td></tr>
+      <tr><td>9</td><td>The model</td></tr>
+      <tr><td>10</td><td>One machine, many cores</td></tr>
+      <tr><td>11</td><td>Job arrays</td></tr>
+      <tr><td>12</td><td>Containers</td></tr>
+    </table></div>
+  </div>
+  <p class="num">2</p>
+</section>
+
+<section class="slide">
+  <p class="label">INTRODUCTION</p>
+  <h2>Not covered</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Cloud, virtual machines</th><td><a href="https://docs.metacentrum.cz/en/docs/cloud">docs.metacentrum.cz/en/docs/cloud</a></td></tr>
+      <tr><th>Kubernetes</th><td><a href="https://docs.metacentrum.cz/en/docs/kubernetes">docs.metacentrum.cz/en/docs/kubernetes</a></td></tr>
+      <tr><th>Galaxy</th><td><a href="https://docs.metacentrum.cz/en/docs/graphical/usegalaxy">docs.metacentrum.cz/en/docs/graphical/usegalaxy</a></td></tr>
+      <tr><th>GPU computing</th><td><a href="https://docs.metacentrum.cz/en/docs/computing/advanced">docs.metacentrum.cz/en/docs/computing/advanced</a></td></tr>
+      <tr><th>IT4Innovations</th><td><a href="https://docs.it4i.cz">docs.it4i.cz</a></td></tr>
+      <tr><th>Object storage</th><td><a href="https://du.cesnet.cz">du.cesnet.cz</a></td></tr>
+    </table></div>
+  </div>
+  <p class="num">3</p>
+</section>
+
+<section class="slide">
+  <p class="label">INTRODUCTION</p>
+  <h2>Account</h2>
+  <div class="body">
+    <ul>
+      <li>Free for Czech academic staff and students</li>
+      <li>Registration approved manually, a few working days</li>
+      <li><strong>Expires every year on 2 February</strong></li>
+      <li>Renewal reminder arrives by email in January</li>
+      <li>After expiry: 3 year grace period, then data deleted</li>
+    </ul>
+    <div class="wrap"><table>
+      <tr><th>Register</th><td><a href="https://metavo.metacentrum.cz/en/application/form">metavo.metacentrum.cz/en/application/form</a></td></tr>
+      <tr><th>Check status</th><td><a href="https://perun.e-infra.cz">perun.e-infra.cz</a></td></tr>
+    </table></div>
+  </div>
+  <p class="num">4</p>
+</section>
+
+<section class="slide">
+  <p class="label">INTRODUCTION</p>
+  <h2>Rules</h2>
+  <div class="body">
+    <ul>
+      <li>Academic and non commercial use only</li>
+      <li>Best effort service, support in working hours</li>
+      <li>Publications must acknowledge the infrastructure</li>
+    </ul>
+    <pre><code>Computational resources were provided by the
+e-INFRA CZ project (ID:90254), supported by the
+Ministry of Education, Youth and Sports of the
+Czech Republic.</code></pre>
+    <p class="quiet"><a href="https://docs.metacentrum.cz/en/docs/access/terms">docs.metacentrum.cz/en/docs/access/terms</a></p>
+  </div>
+  <p class="num">5</p>
+</section>
+
+<!-- ===================== 2 LOGIN ===================== -->
+
+<section class="slide">
+  <p class="label">LOGIN</p>
+  <h2>Login</h2>
+  <div class="body">
+    <ul>
+      <li>MetaCentrum is a set of computers elsewhere</li>
+      <li>Connect over the network, get a text terminal</li>
+      <li>The tool is <code>ssh</code></li>
+      <li>Works on Linux, macOS, Windows PowerShell</li>
+    </ul>
+  </div>
+  <p class="num">6</p>
+</section>
+
+<section class="slide">
+  <p class="label">LOGIN</p>
+  <h2>Frontends</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Brno</th><td><code>zenith</code> <code>skirit</code> <code>perian</code> <code>oven</code></td></tr>
+      <tr><th>Praha</th><td><code>tarkil</code> <code>elmo</code> <code>metafzu</code></td></tr>
+      <tr><th>Plzeň</th><td><code>nympha</code></td></tr>
+      <tr><th>Liberec</th><td><code>charon</code></td></tr>
+      <tr><th>Průhonice</th><td><code>tilia</code></td></tr>
+    </table></div>
+    <p>Full name: <code>zenith.metacentrum.cz</code></p>
+    <p class="quiet">All equivalent. Pick the nearest one.</p>
+  </div>
+  <p class="num">7</p>
+</section>
+
+<section class="slide">
+  <p class="label">LOGIN &middot; 01_login/login.sh</p>
+  <h2>ssh</h2>
+  <div class="body">
+    <pre><code>ssh username@zenith.metacentrum.cz</code></pre>
+    <ul>
+      <li>Password is typed blind, nothing appears</li>
+      <li><code>exit</code> to leave</li>
+    </ul>
+    <p class="quiet"><a href="https://docs.metacentrum.cz/en/docs/access/log-in">docs.metacentrum.cz/en/docs/access/log-in</a></p>
+  </div>
+  <p class="num">8</p>
+</section>
+
+<section class="slide">
+  <p class="label">LOGIN</p>
+  <h2>Password</h2>
+  <div class="body">
+    <ul>
+      <li>MetaCentrum password is the <strong>e-INFRA</strong> password</li>
+      <li>Usually not the university password</li>
+    </ul>
+    <div class="wrap"><table>
+      <tr><th>Set or reset</th><td><a href="https://profile.e-infra.cz">profile.e-infra.cz</a></td></tr>
+      <tr><th>Then</th><td>Authentication, Change password</td></tr>
+    </table></div>
+  </div>
+  <p class="num">9</p>
+</section>
+
+<section class="slide">
+  <p class="label">LOGIN</p>
+  <h2>First look</h2>
+  <div class="body">
+    <pre><code>whoami      the logged in username
+hostname    which machine this is
+pwd         which directory this is
+ls          what is in it
+exit        log out</code></pre>
+  </div>
+  <p class="num">10</p>
+</section>
+
+<section class="slide">
+  <p class="label">LOGIN</p>
+  <h2>Links</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Logging in</th><td><a href="https://docs.metacentrum.cz/en/docs/access/log-in">docs.metacentrum.cz/en/docs/access/log-in</a></td></tr>
+      <tr><th>Account</th><td><a href="https://docs.metacentrum.cz/en/docs/access/account">docs.metacentrum.cz/en/docs/access/account</a></td></tr>
+      <tr><th>Perun</th><td><a href="https://docs.metacentrum.cz/en/docs/access/perun">docs.metacentrum.cz/en/docs/access/perun</a></td></tr>
+      <tr><th>Password</th><td><a href="https://profile.e-infra.cz">profile.e-infra.cz</a></td></tr>
+    </table></div>
+  </div>
+  <p class="num">11</p>
+</section>
+
+<!-- ===================== 3 STORAGE ===================== -->
+
+<section class="slide">
+  <p class="label">STORAGE</p>
+  <h2>Storage</h2>
+  <div class="body">
+    <ul>
+      <li>A laptop has one home directory</li>
+      <li>MetaCentrum gives <strong>one per storage volume</strong></li>
+      <li>Volumes are separate disks in different cities</li>
+      <li>They are not copies of each other</li>
+    </ul>
+  </div>
+  <p class="num">12</p>
+</section>
+
+<section class="slide">
+  <p class="label">STORAGE</p>
+  <h2>Paths</h2>
+  <div class="body">
+    <pre><code>/storage/&lt;volume&gt;/home/&lt;username&gt;</code></pre>
+    <p>For example:</p>
+    <pre><code>/storage/plzen1/home/novak
+/storage/brno2/home/novak
+/storage/praha2-natur/home/novak</code></pre>
+    <p class="quiet">Same username, different disk, different contents.</p>
+  </div>
+  <p class="num">13</p>
+</section>
+
+<section class="slide">
+  <p class="label">STORAGE</p>
+  <h2>Volumes and quotas</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>volume</th><th class="n">space</th><th class="n">files</th><th>backup</th></tr>
+      <tr><td>brno2</td><td class="n">4.29 T</td><td class="n">2.5 M</td><td>snapshot</td></tr>
+      <tr><td>plzen1</td><td class="n">3.22 T</td><td class="n">3 M</td><td>snapshot</td></tr>
+      <tr><td>budejovice1</td><td class="n">3.22 T</td><td class="n">1 M</td><td>full</td></tr>
+      <tr><td>vestec1-elixir</td><td class="n">2.14 T</td><td class="n">2 M</td><td>snapshot</td></tr>
+      <tr><td>brno12-cerit</td><td class="n">none</td><td class="n">none</td><td>snapshot</td></tr>
+      <tr><td>praha2-natur</td><td class="n">7.34 G</td><td class="n">none</td><td>none</td></tr>
+      <tr><td>brno11-elixir</td><td class="n">1.25 G</td><td class="n">1 M</td><td>snapshot</td></tr>
+    </table></div>
+    <p class="quiet">Values differ per account. The login text lists them.</p>
+  </div>
+  <p class="num">14</p>
+</section>
+
+<section class="slide">
+  <p class="label">STORAGE</p>
+  <h2>Which volume</h2>
+  <div class="body">
+    <ul>
+      <li>Big quota: <code>brno2</code>, <code>plzen1</code>, <code>budejovice1</code></li>
+      <li>Small quota: the institute volumes, a few GB only</li>
+      <li>Prefer a volume near the machines used</li>
+      <li>Check the backup column before relying on one</li>
+    </ul>
+  </div>
+  <p class="num">15</p>
+</section>
+
+<section class="slide">
+  <p class="label">STORAGE</p>
+  <h2>Checking quota</h2>
+  <div class="body">
+    <ul>
+      <li>Printed automatically at every login</li>
+      <li>Or the web overview, Storage Spaces</li>
+    </ul>
+    <div class="wrap"><table>
+      <tr><th>Web</th><td><a href="https://my.metacentrum.cz">my.metacentrum.cz</a></td></tr>
+    </table></div>
+    <pre><code>Quota limit warning for /storage/brno2/home/chlupp
+Using 3.93 TB of quota 4.19 TB              93%</code></pre>
+  </div>
+  <p class="num">16</p>
+</section>
+
+<section class="slide">
+  <p class="label">STORAGE &middot; 02_storage/explore_storage.sh</p>
+  <h2>Moving around</h2>
+  <div class="body">
+    <pre><code>pwd                    where am I
+ls                     what is here
+ls -l                  with sizes and dates
+cd /storage/plzen1/home/$USER
+cd ..                  up one level
+cd                     back to the default home
+du -sh .               how big is this directory</code></pre>
+  </div>
+  <p class="num">17</p>
+</section>
+
+<section class="slide">
+  <p class="label">STORAGE</p>
+  <h2>Scratch</h2>
+  <div class="body">
+    <ul>
+      <li>Fast local disk on the machine running a job</li>
+      <li>Path is in <code>$SCRATCHDIR</code></li>
+      <li>Private to that one job</li>
+      <li><strong>Deleted when the job ends</strong></li>
+      <li>Use for temporary files, never for results</li>
+    </ul>
+  </div>
+  <p class="num">18</p>
+</section>
+
+<section class="slide">
+  <p class="label">STORAGE &middot; 02_storage/copy_large_data.pbs</p>
+  <h2>Moving large data</h2>
+  <div class="body">
+    <p>From the documentation:</p>
+    <pre><code>"don't use front-end servers for anything else
+ than moving several small files! Submit a regular
+ job and/or take an interactive job instead"</code></pre>
+    <ul>
+      <li>A few small files: fine on the frontend</li>
+      <li>Anything large: send it as a job</li>
+    </ul>
+    <p class="quiet"><a href="https://docs.metacentrum.cz/en/docs/data/large-data">docs.metacentrum.cz/en/docs/data/large-data</a></p>
+  </div>
+  <p class="num">19</p>
+</section>
+
+<section class="slide">
+  <p class="label">STORAGE</p>
+  <h2>Links</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Storage types</th><td><a href="https://docs.metacentrum.cz/en/docs/data/types-of-storage">docs.metacentrum.cz/en/docs/data/types-of-storage</a></td></tr>
+      <tr><th>Quotas</th><td><a href="https://docs.metacentrum.cz/en/docs/data/quotas">docs.metacentrum.cz/en/docs/data/quotas</a></td></tr>
+      <tr><th>Large data</th><td><a href="https://docs.metacentrum.cz/en/docs/data/large-data">docs.metacentrum.cz/en/docs/data/large-data</a></td></tr>
+      <tr><th>Direct access</th><td><a href="https://docs.metacentrum.cz/en/docs/data/direct-access-storages">docs.metacentrum.cz/en/docs/data/direct-access-storages</a></td></tr>
+      <tr><th>Sharing</th><td><a href="https://docs.metacentrum.cz/en/docs/data/data-sharing">docs.metacentrum.cz/en/docs/data/data-sharing</a></td></tr>
+      <tr><th>Backups</th><td><a href="https://docs.metacentrum.cz/en/docs/data/metacentrum-backup">docs.metacentrum.cz/en/docs/data/metacentrum-backup</a></td></tr>
+    </table></div>
+  </div>
+  <p class="num">20</p>
+</section>
+
+<!-- ===================== 4 ONDEMAND ===================== -->
+
+<section class="slide">
+  <p class="label">ONDEMAND</p>
+  <h2>OnDemand</h2>
+  <div class="body">
+    <ul>
+      <li>MetaCentrum in a web browser</li>
+      <li>Same files, same machines, no terminal needed</li>
+      <li>Log in with the e-INFRA account</li>
+    </ul>
+    <div class="wrap"><table>
+      <tr><th>Service</th><td><a href="https://ondemand.metacentrum.cz">ondemand.metacentrum.cz</a></td></tr>
+      <tr><th>Docs</th><td><a href="https://docs.metacentrum.cz/en/docs/graphical/ondemand">docs.metacentrum.cz/en/docs/graphical/ondemand</a></td></tr>
+    </table></div>
+  </div>
+  <p class="num">21</p>
+</section>
+
+<section class="slide">
+  <p class="label">ONDEMAND</p>
+  <h2>Dashboard</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Files</th><td>browse and edit the storage volumes</td></tr>
+      <tr><th>Jobs</th><td>see and build jobs</td></tr>
+      <tr><th>Clusters</th><td>a terminal in the browser</td></tr>
+      <tr><th>Interactive Apps</th><td>RStudio, Jupyter, Matlab, desktops</td></tr>
+      <tr><th>My Interactive Sessions</th><td>what is running now</td></tr>
+    </table></div>
+    <p class="quiet">A quota warning appears at the top when a volume fills.</p>
+  </div>
+  <p class="num">22</p>
+</section>
+
+<section class="slide">
+  <p class="label">ONDEMAND</p>
+  <h2>File browser</h2>
+  <div class="body">
+    <ul>
+      <li>The same paths seen in the terminal</li>
+      <li>Click through directories like a normal file manager</li>
+      <li>Upload and download by drag and drop</li>
+      <li>Edit text files in the browser</li>
+      <li>Copy between storage volumes</li>
+    </ul>
+    <p class="quiet">Files, then Change directory, then paste a path.</p>
+  </div>
+  <p class="num">23</p>
+</section>
+
+<section class="slide">
+  <p class="label">ONDEMAND</p>
+  <h2>Same place, two ways</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Terminal</th><td><code>cd /storage/plzen1/home/$USER</code></td></tr>
+      <tr><th>OnDemand</th><td>Files, Change directory, paste the same path</td></tr>
+    </table></div>
+    <p>Identical directory. Two interfaces.</p>
+  </div>
+  <p class="num">24</p>
+</section>
+
+<section class="slide">
+  <p class="label">ONDEMAND</p>
+  <h2>Terminal in the browser</h2>
+  <div class="body">
+    <ul>
+      <li>Clusters, then Shell Access</li>
+      <li>A frontend shell, no ssh client needed</li>
+      <li>Useful from a machine without a terminal</li>
+    </ul>
+  </div>
+  <p class="num">25</p>
+</section>
+
+<section class="slide">
+  <p class="label">ONDEMAND</p>
+  <h2>Apps</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><td>RStudio</td><td>used today</td></tr>
+      <tr><td>Jupyter Lab</td><td>the Python equivalent</td></tr>
+      <tr><td>Matlab</td><td></td></tr>
+      <tr><td>MetaCentrum Desktop</td><td>a full graphical desktop</td></tr>
+      <tr><td>Job Composer</td><td>builds job scripts</td></tr>
+    </table></div>
+  </div>
+  <p class="num">26</p>
+</section>
+
+<section class="slide">
+  <p class="label">ONDEMAND</p>
+  <h2>Links</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Service</th><td><a href="https://ondemand.metacentrum.cz">ondemand.metacentrum.cz</a></td></tr>
+      <tr><th>Docs</th><td><a href="https://docs.metacentrum.cz/en/docs/graphical/ondemand">docs.metacentrum.cz/en/docs/graphical/ondemand</a></td></tr>
+      <tr><th>Other graphical access</th><td><a href="https://docs.metacentrum.cz/en/docs/software/graphical-access">docs.metacentrum.cz/en/docs/software/graphical-access</a></td></tr>
+    </table></div>
+  </div>
+  <p class="num">27</p>
+</section>
+
+<!-- ===================== 5 JOBS ===================== -->
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>Jobs</h2>
+  <div class="body">
+    <ul>
+      <li>The frontend does not do the computing</li>
+      <li>It takes a request and passes it on</li>
+      <li>A scheduler finds a free machine and runs the work there</li>
+      <li>That request is a <strong>job</strong></li>
+    </ul>
+  </div>
+  <p class="num">28</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>Frontend and compute node</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Frontend</th><td>shared by everyone. Edit files, submit jobs, small copies</td></tr>
+      <tr><th>Compute node</th><td>yours alone while the job runs. All real work</td></tr>
+    </table></div>
+    <pre><code>login  ->  frontend  ->  scheduler  ->  compute node</code></pre>
+    <p class="quiet">Heavy work on a frontend gets killed.</p>
+  </div>
+  <p class="num">29</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>What a job contains</h2>
+  <div class="body">
+    <ul>
+      <li>A script to run</li>
+      <li>How many cores</li>
+      <li>How much memory</li>
+      <li>How much scratch disk</li>
+      <li>How long it may take</li>
+    </ul>
+    <p class="quiet">The scheduler needs all of it to find a gap.</p>
+  </div>
+  <p class="num">30</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>Clusters</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>cluster</th><th class="n">nodes</th><th class="n">cores</th><th class="n">RAM GB</th></tr>
+      <tr><td>zenon</td><td class="n">59</td><td class="n">32</td><td class="n">504</td></tr>
+      <tr><td>turin</td><td class="n">52</td><td class="n">64</td><td class="n">504</td></tr>
+      <tr><td>adan</td><td class="n">48</td><td class="n">128</td><td class="n">756</td></tr>
+      <tr><td>halmir</td><td class="n">31</td><td class="n">64</td><td class="n">1008</td></tr>
+      <tr><td>magma</td><td class="n">23</td><td class="n">96</td><td class="n">1506</td></tr>
+      <tr><td>elwe</td><td class="n">19</td><td class="n">64</td><td class="n">2004</td></tr>
+      <tr><td>charon</td><td class="n">23</td><td class="n">20</td><td class="n">86</td></tr>
+    </table></div>
+    <p class="quiet">About 42000 cores in total.</p>
+  </div>
+  <p class="num">31</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>Why the names differ</h2>
+  <div class="body">
+    <ul>
+      <li>Each cluster is one hardware purchase</li>
+      <li>Bought by a different institute, at a different time</li>
+      <li>So they differ in cores, memory and age</li>
+      <li>Machine names follow the cluster: <code>zenon23</code>, <code>turin7</code></li>
+      <li>Frontend names are separate and unrelated</li>
+    </ul>
+    <p class="quiet">Normally the scheduler chooses, not the user.</p>
+  </div>
+  <p class="num">32</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>Queues</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>queue</th><th class="n">max walltime</th></tr>
+      <tr><td><code>q_2h</code></td><td class="n">2 hours</td></tr>
+      <tr><td><code>q_2d</code></td><td class="n">48 hours</td></tr>
+      <tr><td><code>q_4d</code></td><td class="n">96 hours</td></tr>
+      <tr><td><code>q_1w</code></td><td class="n">168 hours</td></tr>
+      <tr><td><code>interactive</code></td><td class="n">48 hours</td></tr>
+      <tr><td><code>large_mem</code></td><td class="n">168 hours</td></tr>
+    </table></div>
+    <p><strong>Do not name a queue.</strong> It is chosen from the walltime asked for.</p>
+  </div>
+  <p class="num">33</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS &middot; 04_jobs/first_job.pbs</p>
+  <h2>Asking for resources</h2>
+  <div class="body">
+    <pre><code>#PBS -N my_first_job
+#PBS -l select=1:ncpus=1:mem=1gb:scratch_local=1gb
+#PBS -l walltime=00:05:00</code></pre>
+    <div class="wrap"><table>
+      <tr><td><code>select=1</code></td><td>one machine</td></tr>
+      <tr><td><code>ncpus=1</code></td><td>one core</td></tr>
+      <tr><td><code>mem=1gb</code></td><td>memory</td></tr>
+      <tr><td><code>scratch_local=1gb</code></td><td>temporary disk</td></tr>
+      <tr><td><code>walltime</code></td><td>hard time limit</td></tr>
+    </table></div>
+  </div>
+  <p class="num">34</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>Walltime</h2>
+  <div class="body">
+    <ul>
+      <li>Hard limit. At the end the job is killed, finished or not</li>
+      <li>Asking for far too much also hurts</li>
+      <li>Long requests are harder to fit into a gap</li>
+      <li>Short honest requests start sooner</li>
+    </ul>
+  </div>
+  <p class="num">35</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS &middot; 04_jobs/check_jobs.sh</p>
+  <h2>Four commands</h2>
+  <div class="body">
+    <pre><code>qsub script.pbs        send a job
+qstat -u $USER         list jobs
+qstat -x -u $USER      include finished ones
+qdel 23130368          delete a job</code></pre>
+    <div class="wrap"><table>
+      <tr><td><code>Q</code></td><td>queued</td></tr>
+      <tr><td><code>R</code></td><td>running</td></tr>
+      <tr><td><code>F</code></td><td>finished</td></tr>
+    </table></div>
+  </div>
+  <p class="num">36</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>Where output goes</h2>
+  <div class="body">
+    <pre><code>my_first_job.o23130368     what it printed
+my_first_job.e23130368     error messages</code></pre>
+    <ul>
+      <li>Written in the directory the job was submitted from</li>
+      <li>Appear only when the job finishes</li>
+      <li><code>$PBS_O_WORKDIR</code> holds that directory</li>
+    </ul>
+  </div>
+  <p class="num">37</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>Web tools</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Overview</th><td><a href="https://my.metacentrum.cz">my.metacentrum.cz</a></td></tr>
+      <tr><td></td><td>jobs, queues, machines, storage quotas</td></tr>
+      <tr><th>Build a qsub</th><td><a href="https://my.metacentrum.cz/qsub-assembler">my.metacentrum.cz/qsub-assembler</a></td></tr>
+      <tr><td></td><td>writes a correct command and shows matching machines</td></tr>
+    </table></div>
+  </div>
+  <p class="num">38</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>Fair share</h2>
+  <div class="body">
+    <ul>
+      <li>Nobody buys time. Everything is shared</li>
+      <li>Heavy recent use lowers priority</li>
+      <li>Usage decays, so priority recovers</li>
+      <li>Modest requests start sooner</li>
+    </ul>
+  </div>
+  <p class="num">39</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOBS</p>
+  <h2>Links</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Basic job</th><td><a href="https://docs.metacentrum.cz/en/docs/computing/run-basic-job">docs.metacentrum.cz/en/docs/computing/run-basic-job</a></td></tr>
+      <tr><th>Advanced</th><td><a href="https://docs.metacentrum.cz/en/docs/computing/advanced">docs.metacentrum.cz/en/docs/computing/advanced</a></td></tr>
+      <tr><th>Monitoring</th><td><a href="https://docs.metacentrum.cz/en/docs/computing/my-metacentrum">docs.metacentrum.cz/en/docs/computing/my-metacentrum</a></td></tr>
+      <tr><th>Live view</th><td><a href="https://my.metacentrum.cz">my.metacentrum.cz</a></td></tr>
+    </table></div>
+  </div>
+  <p class="num">40</p>
+</section>
+
+<!-- ===================== 6 RSTUDIO ===================== -->
+
+<section class="slide">
+  <p class="label">RSTUDIO</p>
+  <h2>RStudio</h2>
+  <div class="body">
+    <ul>
+      <li>The familiar RStudio, in a browser</li>
+      <li>Running on a compute node, not on a laptop</li>
+      <li>Started from OnDemand, Interactive Apps</li>
+    </ul>
+  </div>
+  <p class="num">41</p>
+</section>
+
+<section class="slide">
+  <p class="label">RSTUDIO</p>
+  <h2>RStudio is a job</h2>
+  <div class="body">
+    <ul>
+      <li>The session form is a job request</li>
+      <li>Launch means submit</li>
+      <li>Queued means waiting for a machine</li>
+      <li>The session ends when walltime runs out</li>
+    </ul>
+    <p class="quiet">Same mechanism as section 4, with a form instead of a script.</p>
+  </div>
+  <p class="num">42</p>
+</section>
+
+<section class="slide">
+  <p class="label">RSTUDIO</p>
+  <h2>The form</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>form field</th><th>job request</th></tr>
+      <tr><td>CPUs, 4</td><td><code>ncpus=4</code></td></tr>
+      <tr><td>Memory, 16 GB</td><td><code>mem=16gb</code></td></tr>
+      <tr><td>Walltime, 8 hours</td><td><code>walltime=08:00:00</code></td></tr>
+    </table></div>
+    <p class="quiet">Suggested for today: 4 cores, 16 GB, 8 hours.</p>
+  </div>
+  <p class="num">43</p>
+</section>
+
+<section class="slide">
+  <p class="label">RSTUDIO</p>
+  <h2>R packages</h2>
+  <div class="body">
+    <ul>
+      <li>The plain R module has <strong>almost no packages</strong></li>
+      <li>The RStudio image has tidyverse, but no Stan</li>
+      <li>Installing them takes 10 to 60 minutes and can fail</li>
+      <li>For today everything is installed already</li>
+    </ul>
+  </div>
+  <p class="num">44</p>
+</section>
+
+<section class="slide">
+  <p class="label">RSTUDIO &middot; 05_rstudio/setup_packages.R</p>
+  <h2>Two lines</h2>
+  <div class="body">
+    <pre><code>.libPaths(c("/storage/plzen1/home/chlupp/workshop/Rlibs",
+            .libPaths()))
+
+cmdstanr::set_cmdstan_path(
+  "/storage/plzen1/home/chlupp/workshop/cmdstan/cmdstan-2.39.0")</code></pre>
+    <p>Run at the start of every session today. Nothing compiles.</p>
+  </div>
+  <p class="num">45</p>
+</section>
+
+<section class="slide">
+  <p class="label">RSTUDIO &middot; 05_rstudio/slow_loop.R</p>
+  <h2>Something slow</h2>
+  <div class="body">
+    <pre><code>source("05_rstudio/slow_loop.R")</code></pre>
+    <ul>
+      <li>2000 bootstrap repeats, one after another</li>
+      <li>Write the time down</li>
+    </ul>
+    <p>Question: did any repeat need the answer from another?</p>
+  </div>
+  <p class="num">46</p>
+</section>
+
+<section class="slide">
+  <p class="label">RSTUDIO</p>
+  <h2>Links</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>OnDemand</th><td><a href="https://ondemand.metacentrum.cz">ondemand.metacentrum.cz</a></td></tr>
+      <tr><th>Docs</th><td><a href="https://docs.metacentrum.cz/en/docs/graphical/ondemand">docs.metacentrum.cz/en/docs/graphical/ondemand</a></td></tr>
+      <tr><th>Installing software</th><td><a href="https://docs.metacentrum.cz/en/docs/software/install-software">docs.metacentrum.cz/en/docs/software/install-software</a></td></tr>
+    </table></div>
+  </div>
+  <p class="num">47</p>
+</section>
+
+<!-- ===================== 7 INTERACTIVE JOB ===================== -->
+
+<section class="slide">
+  <p class="label">INTERACTIVE JOB</p>
+  <h2>Interactive job</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Normal job</th><td>runs a script, output read afterwards</td></tr>
+      <tr><th>Interactive job</th><td>a terminal on a compute node, typed into live</td></tr>
+    </table></div>
+  </div>
+  <p class="num">48</p>
+</section>
+
+<section class="slide">
+  <p class="label">INTERACTIVE JOB &middot; 06_interactive_job/interactive.sh</p>
+  <h2>qsub -I</h2>
+  <div class="body">
+    <pre><code>qsub -I -l select=1:ncpus=4:mem=8gb:scratch_local=10gb \
+        -l walltime=02:00:00</code></pre>
+    <ul>
+      <li>The prompt hangs while waiting for a machine</li>
+      <li>The machine name changes when it starts</li>
+      <li><code>exit</code> gives the machine back</li>
+    </ul>
+  </div>
+  <p class="num">49</p>
+</section>
+
+<section class="slide">
+  <p class="label">INTERACTIVE JOB</p>
+  <h2>When to use it</h2>
+  <div class="body">
+    <ul>
+      <li>Copying large amounts of data</li>
+      <li>Testing commands before writing a script</li>
+      <li>Installing or compiling software</li>
+      <li>Running R by hand on something big</li>
+    </ul>
+  </div>
+  <p class="num">50</p>
+</section>
+
+<section class="slide">
+  <p class="label">INTERACTIVE JOB</p>
+  <h2>Modules</h2>
+  <div class="body">
+    <pre><code>module avail r/            list R versions
+module add r/4.5.1-gcc-10.2.1-zmneq6c
+module list                what is loaded
+module purge               unload everything</code></pre>
+    <p><strong>Never pipe module add.</strong> It runs in a subshell and the change is lost.</p>
+    <p class="quiet"><a href="https://docs.metacentrum.cz/en/docs/software/modules">docs.metacentrum.cz/en/docs/software/modules</a></p>
+  </div>
+  <p class="num">51</p>
+</section>
+
+<section class="slide">
+  <p class="label">INTERACTIVE JOB</p>
+  <h2>Links</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Running jobs</th><td><a href="https://docs.metacentrum.cz/en/docs/computing/run-basic-job">docs.metacentrum.cz/en/docs/computing/run-basic-job</a></td></tr>
+      <tr><th>Modules</th><td><a href="https://docs.metacentrum.cz/en/docs/software/modules">docs.metacentrum.cz/en/docs/software/modules</a></td></tr>
+      <tr><th>Finding software</th><td><a href="https://docs.metacentrum.cz/en/docs/software/search-soft">docs.metacentrum.cz/en/docs/software/search-soft</a></td></tr>
+    </table></div>
+  </div>
+  <p class="num">52</p>
+</section>
+
+<!-- ===================== 8 AI SERVICES ===================== -->
+
+<section class="slide">
+  <p class="label">AI SERVICES</p>
+  <h2>AI services</h2>
+  <div class="body">
+    <ul>
+      <li>Language models run on Czech academic hardware</li>
+      <li>Free with a MetaCentrum account</li>
+      <li>Data stays on national infrastructure</li>
+      <li>Two ways in: a chat page, and an API</li>
+    </ul>
+  </div>
+  <p class="num">53</p>
+</section>
+
+<section class="slide">
+  <p class="label">AI SERVICES</p>
+  <h2>Chat</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Service</th><td><a href="https://chat.ai.e-infra.cz">chat.ai.e-infra.cz</a></td></tr>
+      <tr><th>Docs</th><td><a href="https://docs.cerit.io/en/docs/ai-as-a-service/chat-ai">docs.cerit.io/en/docs/ai-as-a-service/chat-ai</a></td></tr>
+    </table></div>
+    <ul>
+      <li>Log in with e-INFRA</li>
+      <li>Several models to choose from</li>
+      <li>Also where the API key comes from</li>
+    </ul>
+  </div>
+  <p class="num">54</p>
+</section>
+
+<section class="slide">
+  <p class="label">AI SERVICES</p>
+  <h2>API</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Address</th><td><code>https://llm.ai.e-infra.cz/v1</code></td></tr>
+      <tr><th>Docs</th><td><a href="https://docs.cerit.io/en/docs/ai-as-a-service/ai-api">docs.cerit.io/en/docs/ai-as-a-service/ai-api</a></td></tr>
+    </table></div>
+    <ul>
+      <li>Same shape as the OpenAI API</li>
+      <li>Any client library works, just change the address</li>
+      <li>Text generation and embeddings</li>
+    </ul>
+  </div>
+  <p class="num">55</p>
+</section>
+
+<section class="slide">
+  <p class="label">AI SERVICES</p>
+  <h2>Getting a key</h2>
+  <div class="body">
+    <ul>
+      <li>Open <a href="https://chat.ai.e-infra.cz">chat.ai.e-infra.cz</a></li>
+      <li>Settings, Account, API keys</li>
+      <li>Generate, then copy it</li>
+    </ul>
+    <p>Put it in <code>~/.Renviron</code>, then restart R:</p>
+    <pre><code>EINFRA_API_KEY=your_key_here</code></pre>
+    <p><strong>Never in a script.</strong> Scripts get shared.</p>
+  </div>
+  <p class="num">56</p>
+</section>
+
+<section class="slide">
+  <p class="label">AI SERVICES &middot; 07_ai_services/smoke_test.R</p>
+  <h2>Check it works</h2>
+  <div class="body">
+    <pre><code>source("07_ai_services/smoke_test.R")</code></pre>
+    <ul>
+      <li>Is there a key</li>
+      <li>Does the text model answer</li>
+      <li>Does the embedding model answer</li>
+    </ul>
+    <p class="quiet">One clear message now, instead of a strange error later.</p>
+  </div>
+  <p class="num">57</p>
+</section>
+
+<section class="slide">
+  <p class="label">AI SERVICES</p>
+  <h2>The study</h2>
+  <div class="body">
+    <p><strong>Does the text of a review carry its star rating, and does that differ between products?</strong></p>
+    <ul>
+      <li>Real reviews cannot be scraped this morning</li>
+      <li>So a model writes them, from a rating we choose</li>
+      <li>We know the right answer by construction</li>
+      <li>That is what makes it a simulation study</li>
+    </ul>
+  </div>
+  <p class="num">58</p>
+</section>
+
+<section class="slide">
+  <p class="label">AI SERVICES &middot; 07_ai_services/generate_texts.R</p>
+  <h2>Generate</h2>
+  <div class="body">
+    <pre><code>source("07_ai_services/generate_texts.R")</code></pre>
+    <div class="wrap"><table>
+      <tr><td>3 products</td><td>any three</td></tr>
+      <tr><td>2 ratings</td><td>1 star and 5 star</td></tr>
+      <tr><td>10 repeats</td><td></td></tr>
+      <tr><th>60 reviews</th><td class="n">about 45 seconds</td></tr>
+    </table></div>
+    <p class="quiet">Different products per person spreads the load.</p>
+  </div>
+  <p class="num">59</p>
+</section>
+
+<section class="slide">
+  <p class="label">AI SERVICES &middot; 07_ai_services/cache_demo.R</p>
+  <h2>The service remembers answers</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>same question, 3 times</th><th class="n">seconds</th></tr>
+      <tr><td>first ask</td><td class="n">1.94</td></tr>
+      <tr><td>second ask</td><td class="n">0.10</td></tr>
+      <tr><td>third ask</td><td class="n">0.08</td></tr>
+    </table></div>
+    <p>Identical text each time. Nothing was written.</p>
+  </div>
+  <p class="num">60</p>
+</section>
+
+<section class="slide">
+  <p class="label">AI SERVICES &middot; 07_ai_services/cache_demo.R</p>
+  <h2>Why that matters</h2>
+  <div class="body">
+    <ul>
+      <li>Our first corpus was <strong>70 percent exact copies</strong></li>
+      <li>No empty rows, balanced groups, sensible lengths</li>
+      <li>Only a duplicate check found it</li>
+    </ul>
+    <p>Fix: send a different <code>seed</code> with each request.</p>
+    <p><em>Count duplicates before anything else.</em></p>
+  </div>
+  <p class="num">61</p>
+</section>
+
+<section class="slide">
+  <p class="label">AI SERVICES</p>
+  <h2>Limits</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Parallel requests</th><td class="n">4 per key</td></tr>
+      <tr><th>Sequential requests</th><td>no limit seen</td></tr>
+      <tr><th>On refusal</th><td>HTTP 429</td></tr>
+    </table></div>
+    <p>A 429 asks for a wait of 1800 seconds. That number is wrong. Other requests on the same key succeed immediately.</p>
+    <p class="quiet">Use 2 parallel in R. httr2 opens more than it says.</p>
+  </div>
+  <p class="num">62</p>
+</section>
+
+<section class="slide">
+  <p class="label">AI SERVICES</p>
+  <h2>Links</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Chat</th><td><a href="https://chat.ai.e-infra.cz">chat.ai.e-infra.cz</a></td></tr>
+      <tr><th>Chat docs</th><td><a href="https://docs.cerit.io/en/docs/ai-as-a-service/chat-ai">docs.cerit.io/en/docs/ai-as-a-service/chat-ai</a></td></tr>
+      <tr><th>API docs</th><td><a href="https://docs.cerit.io/en/docs/ai-as-a-service/ai-api">docs.cerit.io/en/docs/ai-as-a-service/ai-api</a></td></tr>
+      <tr><th>All AI services</th><td><a href="https://docs.cerit.io/en/docs/ai-as-a-service">docs.cerit.io/en/docs/ai-as-a-service</a></td></tr>
+    </table></div>
+  </div>
+  <p class="num">63</p>
+</section>
+
+<!-- ===================== 9 EMBEDDINGS ===================== -->
+
+<section class="slide">
+  <p class="label">EMBEDDINGS</p>
+  <h2>Embeddings</h2>
+  <div class="body">
+    <ul>
+      <li>A model reads text, gives back numbers</li>
+      <li>1024 numbers per review here</li>
+      <li>Similar meaning gives similar numbers</li>
+      <li>After that it is just a matrix</li>
+    </ul>
+  </div>
+  <p class="num">64</p>
+</section>
+
+<section class="slide">
+  <p class="label">EMBEDDINGS &middot; 08_embeddings/embed_texts.R</p>
+  <h2>Embed the reviews</h2>
+  <div class="body">
+    <pre><code>source("08_embeddings/embed_texts.R")</code></pre>
+    <div class="wrap"><table>
+      <tr><td>60 reviews</td><td class="n">about 1 second</td></tr>
+      <tr><td>result</td><td>60 rows, 1024 columns</td></tr>
+    </table></div>
+    <p class="quiet">Sent in batches of 64. One batch is one request.</p>
+  </div>
+  <p class="num">65</p>
+</section>
+
+<section class="slide">
+  <p class="label">EMBEDDINGS &middot; 08_embeddings/nearest_neighbours.R</p>
+  <h2>Nearest neighbours</h2>
+  <div class="body">
+    <pre><code>source("08_embeddings/nearest_neighbours.R")</code></pre>
+    <p>Pick a review, find the three closest, read them.</p>
+    <ul>
+      <li>Same product? Usually yes</li>
+      <li>Same rating? Less often</li>
+    </ul>
+    <p>Product is the easy signal. Rating is the hard one.</p>
+  </div>
+  <p class="num">66</p>
+</section>
+
+<section class="slide">
+  <p class="label">EMBEDDINGS &middot; 08_embeddings/explore_full_corpus.R</p>
+  <h2>All 50000</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><td>generating</td><td class="n">408 min</td></tr>
+      <tr><td>embedding</td><td class="n">12 min</td></tr>
+      <tr><td>reducing</td><td class="n">1 min</td></tr>
+    </table></div>
+    <p>Made overnight with the same scripts, at 800 times the size.</p>
+    <p class="quiet">Big run while asleep. Small run to check the code.</p>
+  </div>
+  <p class="num">67</p>
+</section>
+
+<section class="slide">
+  <p class="label">EMBEDDINGS</p>
+  <h2>The picture</h2>
+  <div class="body">
+    <ul>
+      <li>By product: clear separate clumps</li>
+      <li>By rating: a gradient inside each clump</li>
+      <li><strong>Obvious in some clumps, absent in others</strong></li>
+    </ul>
+    <p>That difference is the question.</p>
+    <p class="quiet">Per product the correlation runs from 0.32 to 0.85.</p>
+  </div>
+  <p class="num">68</p>
+</section>
+
+<!-- ===================== 10 THE MODEL ===================== -->
+
+<section class="slide">
+  <p class="label">MODEL</p>
+  <h2>The question</h2>
+  <div class="body">
+    <p><strong>How much does the text to rating relationship vary between products?</strong></p>
+    <ul>
+      <li>Not "is there a relationship". There is</li>
+      <li>The interesting part is how much it differs</li>
+      <li>One average number would hide that</li>
+    </ul>
+  </div>
+  <p class="num">69</p>
+</section>
+
+<section class="slide">
+  <p class="label">MODEL &middot; 09_model/model.stan</p>
+  <h2>The model in words</h2>
+  <div class="body">
+    <pre><code>score = average effect of each component
+      + this product's own adjustment
+      + this product's own extra sensitivity
+
+rating follows from the score</code></pre>
+    <p>The last line before the rating is the one that matters.</p>
+  </div>
+  <p class="num">70</p>
+</section>
+
+<section class="slide">
+  <p class="label">MODEL &middot; 09_model/model.stan</p>
+  <h2>Why ordinal</h2>
+  <div class="body">
+    <ul>
+      <li>Stars are ordered: 5 is more than 4</li>
+      <li>But gaps are not equal</li>
+      <li>The step from 1 to 2 is not the step from 4 to 5</li>
+      <li>So the model estimates the cut points instead of assuming them</li>
+    </ul>
+    <p class="quiet">Treating stars as a plain number would be wrong.</p>
+  </div>
+  <p class="num">71</p>
+</section>
+
+<section class="slide">
+  <p class="label">MODEL &middot; 09_model/model.stan</p>
+  <h2>Why hierarchical</h2>
+  <div class="body">
+    <ul>
+      <li>25 products are not 25 unrelated experiments</li>
+      <li>Products with less data borrow from the rest</li>
+      <li>And it gives the number we actually want</li>
+    </ul>
+    <p><code>tau[2]</code> is how much the effect varies between products.</p>
+  </div>
+  <p class="num">72</p>
+</section>
+
+<section class="slide">
+  <p class="label">MODEL &middot; 09_model/model.stan</p>
+  <h2>Two technical choices</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Non centred</th><td>the obvious form makes a shape the sampler cannot explore</td></tr>
+      <tr><th>No global intercept</th><td>not identified. The cut points absorb it</td></tr>
+    </table></div>
+    <p class="quiet">Both explained line by line in the file.</p>
+  </div>
+  <p class="num">73</p>
+</section>
+
+<section class="slide">
+  <p class="label">MODEL &middot; tests/test_model_recovery.R</p>
+  <h2>Is the model right</h2>
+  <div class="body">
+    <p>Make data with known answers, fit, check they come back.</p>
+    <div class="wrap"><table>
+      <tr><td>parameters recovered</td><td class="n">9 of 9</td></tr>
+      <tr><td>divergences</td><td class="n">0</td></tr>
+      <tr><td>largest rhat</td><td class="n">1.010</td></tr>
+    </table></div>
+    <p class="quiet">Necessary before pointing it at anything real.</p>
+  </div>
+  <p class="num">74</p>
+</section>
+
+<section class="slide">
+  <p class="label">MODEL &middot; 09_model/fit_once.R</p>
+  <h2>Fit it</h2>
+  <div class="body">
+    <pre><code>source("09_model/fit_once.R")</code></pre>
+    <div class="wrap"><table>
+      <tr><td>rows</td><td class="n">4000</td></tr>
+      <tr><td>products</td><td class="n">25</td></tr>
+      <tr><td>chains</td><td class="n">4</td></tr>
+      <tr><td>time</td><td class="n">about 40 s</td></tr>
+    </table></div>
+  </div>
+  <p class="num">75</p>
+</section>
+
+<section class="slide">
+  <p class="label">MODEL</p>
+  <h2>Check before reading</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>divergences</th><td>want 0</td></tr>
+      <tr><th>rhat</th><td>want under 1.01</td></tr>
+    </table></div>
+    <p>If either fails, the numbers mean nothing.</p>
+  </div>
+  <p class="num">76</p>
+</section>
+
+<section class="slide">
+  <p class="label">MODEL &middot; 09_model/control_arm.R</p>
+  <h2>The obvious objection</h2>
+  <div class="body">
+    <p>We chose the ratings. So of course they can be recovered.</p>
+    <p>Answer: shuffle the ratings within each product and fit again. Same texts, same products, link broken.</p>
+    <p>A correct method must now find <strong>nothing</strong>.</p>
+  </div>
+  <p class="num">77</p>
+</section>
+
+<section class="slide">
+  <p class="label">MODEL &middot; 09_model/control_arm.R</p>
+  <h2>Result</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th></th><th class="n">beta[1]</th><th class="n">tau[2]</th></tr>
+      <tr><td>real data</td><td class="n">-1.56</td><td class="n">0.26</td></tr>
+      <tr><td>shuffled</td><td class="n">0.04</td><td class="n">0.06</td></tr>
+    </table></div>
+    <p>One extra fit. The most convincing check available.</p>
+  </div>
+  <p class="num">78</p>
+</section>
+
+<!-- ===================== 11 PARALLEL ===================== -->
+
+<section class="slide">
+  <p class="label">PARALLEL</p>
+  <h2>Chains</h2>
+  <div class="body">
+    <ul>
+      <li>The model is fitted by 4 chains</li>
+      <li>Each is a separate exploration from a different start</li>
+      <li>They never talk while running</li>
+      <li>Compared only at the end, which is what rhat does</li>
+    </ul>
+    <p>So they can run at the same time.</p>
+  </div>
+  <p class="num">79</p>
+</section>
+
+<section class="slide">
+  <p class="label">PARALLEL &middot; 10_parallel/compare_cores.R</p>
+  <h2>One argument</h2>
+  <div class="body">
+    <pre><code>fit_model(dat, cores = 1, chains = 4)
+fit_model(dat, cores = 4, chains = 4)</code></pre>
+    <p>Nothing else differs.</p>
+  </div>
+  <p class="num">80</p>
+</section>
+
+<section class="slide">
+  <p class="label">PARALLEL &middot; 10_parallel/compare_cores.R</p>
+  <h2>Result</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><td>1 core</td><td class="n">125.3 s</td></tr>
+      <tr><td>4 cores</td><td class="n">37.7 s</td></tr>
+      <tr><th>speed up</th><td class="n">3.32 x</td></tr>
+    </table></div>
+  </div>
+  <p class="num">81</p>
+</section>
+
+<section class="slide">
+  <p class="label">PARALLEL</p>
+  <h2>Why not 4 times</h2>
+  <div class="body">
+    <ul>
+      <li>The slowest chain decides the total</li>
+      <li>Warm up takes different lengths in each chain</li>
+      <li>Starting and collecting costs a little</li>
+    </ul>
+  </div>
+  <p class="num">82</p>
+</section>
+
+<section class="slide">
+  <p class="label">PARALLEL</p>
+  <h2>The limit</h2>
+  <div class="body">
+    <ul>
+      <li>4 chains means 4 pieces of work</li>
+      <li>40 cores would change nothing</li>
+    </ul>
+    <p>To go faster, use more <strong>machines</strong>.</p>
+  </div>
+  <p class="num">83</p>
+</section>
+
+<!-- ===================== 12 JOB ARRAYS ===================== -->
+
+<section class="slide">
+  <p class="label">JOB ARRAYS</p>
+  <h2>Job arrays</h2>
+  <div class="body">
+    <ul>
+      <li>One fit says what this data shows</li>
+      <li>It does not say how much that would move</li>
+      <li>So: resample, refit, repeat 30 times</li>
+      <li>Each repeat is independent of the others</li>
+    </ul>
+  </div>
+  <p class="num">84</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOB ARRAYS &middot; 11_job_arrays/submit_array.pbs</p>
+  <h2>Submit first</h2>
+  <div class="body">
+    <pre><code>qsub -J 1-30 11_job_arrays/submit_array.pbs</code></pre>
+    <p>Send it now. We talk while it runs.</p>
+    <p class="quiet">The queue is not dead time if it is planned for.</p>
+  </div>
+  <p class="num">85</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOB ARRAYS</p>
+  <h2>What -J does</h2>
+  <div class="body">
+    <pre><code>qsub -J 1-30 script.pbs
+
+  ->  30 jobs, on up to 30 machines
+      each one reads $PBS_ARRAY_INDEX</code></pre>
+    <ul>
+      <li>Job 1 sees 1, job 2 sees 2, and so on</li>
+      <li>The script uses that number to pick its work</li>
+    </ul>
+    <p>That is the whole mechanism.</p>
+  </div>
+  <p class="num">86</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOB ARRAYS &middot; 11_job_arrays/fit_one_replicate.R</p>
+  <h2>Reading the number</h2>
+  <div class="body">
+    <pre><code>from_pbs &lt;- Sys.getenv("PBS_ARRAY_INDEX")
+my_number &lt;- as.integer(from_pbs)</code></pre>
+    <ul>
+      <li>Seed built from that number</li>
+      <li>So repeat 7 always draws the same sample</li>
+      <li>On any machine, on any day</li>
+    </ul>
+  </div>
+  <p class="num">87</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOB ARRAYS</p>
+  <h2>No MPI</h2>
+  <div class="body">
+    <ul>
+      <li>No message passing</li>
+      <li>No rewriting of the statistics</li>
+      <li>The jobs never speak to each other</li>
+    </ul>
+    <p>If the problem is "do this N times with a different seed", the cluster is already usable.</p>
+  </div>
+  <p class="num">88</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOB ARRAYS</p>
+  <h2>Watching them</h2>
+  <div class="body">
+    <pre><code>qstat -t -u $USER      -t expands all 30
+qdel '23156948[]'      delete the whole array</code></pre>
+    <p>Keep the square brackets on qdel.</p>
+  </div>
+  <p class="num">89</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOB ARRAYS</p>
+  <h2>Separate output files</h2>
+  <div class="body">
+    <pre><code>#PBS -o logs/rep_^array_index^.out
+#PBS -e logs/rep_^array_index^.err</code></pre>
+    <p><code>^array_index^</code> is replaced by each job's own number.</p>
+    <p class="quiet">Without it, 30 jobs write over each other.</p>
+  </div>
+  <p class="num">90</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOB ARRAYS</p>
+  <h2>Why 30 and not 3000</h2>
+  <div class="body">
+    <ul>
+      <li>Nothing technical stops 3000</li>
+      <li>Fair share does the rest</li>
+      <li>30 is polite for a shared afternoon</li>
+      <li>It makes exactly the same point</li>
+    </ul>
+  </div>
+  <p class="num">91</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOB ARRAYS &middot; 11_job_arrays/merge_results.R</p>
+  <h2>Merge</h2>
+  <div class="body">
+    <pre><code>Rscript 11_job_arrays/merge_results.R signal</code></pre>
+    <ul>
+      <li>Tolerates missing repeats on purpose</li>
+      <li>Says "merged 23 of 30, still waiting on 7"</li>
+      <li>Run it again later</li>
+    </ul>
+    <p class="quiet">That is not an error. That is a cluster.</p>
+  </div>
+  <p class="num">92</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOB ARRAYS</p>
+  <h2>Result</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th></th><th class="n">beta[1]</th><th class="n">tau[2]</th></tr>
+      <tr><td>real data, 30 fits</td><td class="n">-1.474</td><td class="n">0.141</td></tr>
+      <tr><td>shuffled, 30 fits</td><td class="n">-0.004</td><td class="n">0.059</td></tr>
+    </table></div>
+    <div class="wrap"><table>
+      <tr><td>30 fits, in parallel</td><td class="n">about 7 min</td></tr>
+      <tr><td>30 fits, one after another</td><td class="n">about 40 min</td></tr>
+    </table></div>
+  </div>
+  <p class="num">93</p>
+</section>
+
+<section class="slide">
+  <p class="label">JOB ARRAYS</p>
+  <h2>Seeing the tail</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><td>fits with no problems</td><td class="n">47 of 60</td></tr>
+      <tr><td>worst single fit</td><td class="n">134 divergences</td></tr>
+    </table></div>
+    <p>One fit never shows this. Thirty do.</p>
+  </div>
+  <p class="num">94</p>
+</section>
+
+<!-- ===================== 13 CONTAINERS ===================== -->
+
+<section class="slide">
+  <p class="label">CONTAINERS</p>
+  <h2>Containers</h2>
+  <div class="body">
+    <p>The same problem has come up three times today:</p>
+    <ul>
+      <li>The plain R module has no packages</li>
+      <li>The RStudio image has no Stan</li>
+      <li>Installing takes a long time and can fail</li>
+    </ul>
+  </div>
+  <p class="num">95</p>
+</section>
+
+<section class="slide">
+  <p class="label">CONTAINERS</p>
+  <h2>And a fourth reason</h2>
+  <div class="body">
+    <p>The language model this workshop was built on <strong>disappeared two days before the workshop.</strong></p>
+    <div class="wrap"><table>
+      <tr><td>Monday</td><td>answered normally</td></tr>
+      <tr><td>Wednesday</td><td>HTTP 403, model is blocked</td></tr>
+    </table></div>
+    <p>Software nobody controls locally changes without warning.</p>
+  </div>
+  <p class="num">96</p>
+</section>
+
+<section class="slide">
+  <p class="label">CONTAINERS</p>
+  <h2>What a container is</h2>
+  <div class="body">
+    <ul>
+      <li>One file</li>
+      <li>Holds R, every package, the compiler, fixed versions</li>
+      <li>Runs the same today, next year, on another machine</li>
+      <li>Same file used by RStudio and by all 30 array jobs</li>
+    </ul>
+  </div>
+  <p class="num">97</p>
+</section>
+
+<section class="slide">
+  <p class="label">CONTAINERS &middot; 12_containers/workshop-r.def</p>
+  <h2>The definition file</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><td><code>Bootstrap</code>, <code>From</code></td><td>what to start from</td></tr>
+      <tr><td><code>%post</code></td><td>commands run while building</td></tr>
+      <tr><td><code>%environment</code></td><td>variables set every run</td></tr>
+      <tr><td><code>%test</code></td><td>runs at the end. Failure fails the build</td></tr>
+    </table></div>
+  </div>
+  <p class="num">98</p>
+</section>
+
+<section class="slide">
+  <p class="label">CONTAINERS &middot; 12_containers/workshop-r.def</p>
+  <h2>Two lines worth copying</h2>
+  <div class="body">
+    <ul>
+      <li>Fail the build if a package is missing</li>
+      <li>Compile and run a tiny Stan model during the build</li>
+    </ul>
+    <p>A container quietly missing a package is worse than none, because it will be trusted.</p>
+  </div>
+  <p class="num">99</p>
+</section>
+
+<section class="slide">
+  <p class="label">CONTAINERS &middot; 12_containers/build_image.sh</p>
+  <h2>Building</h2>
+  <div class="body">
+    <pre><code>ssh builder.metacentrum.cz
+export SINGULARITY_TMPDIR=/scratch/$USER/tmp
+singularity build --fakeroot --sandbox mydir/ my.def
+singularity build --fakeroot my.sif mydir/</code></pre>
+    <p class="quiet">Needs membership of the group <code>builders</code>. Most accounts have it. If not, one email to meta@cesnet.cz.</p>
+  </div>
+  <p class="num">100</p>
+</section>
+
+<section class="slide">
+  <p class="label">CONTAINERS</p>
+  <h2>Four ways it failed for us</h2>
+  <div class="body">
+    <ul>
+      <li>Hardcoded a version number in a path</li>
+      <li>Fixed it in R, where the answer was not visible</li>
+      <li>Filled the build disk</li>
+      <li>Moved the build to network storage, which cannot set file ownership</li>
+    </ul>
+    <p class="quiet">Build to a sandbox folder first. A failure then costs one step, not everything.</p>
+  </div>
+  <p class="num">101</p>
+</section>
+
+<section class="slide">
+  <p class="label">CONTAINERS</p>
+  <h2>Links</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Containers</th><td><a href="https://docs.metacentrum.cz/en/docs/software/containers">docs.metacentrum.cz/en/docs/software/containers</a></td></tr>
+      <tr><th>Ready made images</th><td><code>/cvmfs/singularity.metacentrum.cz/</code></td></tr>
+      <tr><th>Build machine</th><td><code>builder.metacentrum.cz</code></td></tr>
+      <tr><th>Access request</th><td>meta@cesnet.cz</td></tr>
+    </table></div>
+  </div>
+  <p class="num">102</p>
+</section>
+
+<!-- ===================== 14 REST ===================== -->
+
+<section class="slide">
+  <p class="label">REST OF METACENTRUM</p>
+  <h2>Everything else</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Cloud</th><td>virtual machines, when root is needed</td></tr>
+      <tr><th>Kubernetes</th><td>containers as a service</td></tr>
+      <tr><th>Galaxy</th><td>bioinformatics without scripting</td></tr>
+      <tr><th>GPU queues</th><td>for deep learning</td></tr>
+      <tr><th>IT4Innovations</th><td>Karolina, Barbora, when the grid is not enough</td></tr>
+      <tr><th>Object storage</th><td>archives, du.cesnet.cz</td></tr>
+    </table></div>
+  </div>
+  <p class="num">103</p>
+</section>
+
+<section class="slide">
+  <p class="label">REST OF METACENTRUM</p>
+  <h2>Getting help</h2>
+  <div class="body">
+    <div class="wrap"><table>
+      <tr><th>Email</th><td>meta@cesnet.cz</td></tr>
+      <tr><th>Docs</th><td><a href="https://docs.metacentrum.cz">docs.metacentrum.cz</a></td></tr>
+      <tr><th>e-INFRA docs</th><td><a href="https://docs.e-infra.cz">docs.e-infra.cz</a></td></tr>
+      <tr><th>Outages</th><td><a href="https://docs.metacentrum.cz/en/docs/support/outages">docs.metacentrum.cz/en/docs/support/outages</a></td></tr>
+      <tr><th>FAQ</th><td><a href="https://docs.metacentrum.cz/en/docs/support/faqs">docs.metacentrum.cz/en/docs/support/faqs</a></td></tr>
+    </table></div>
+    <p class="quiet">They answer, and they take requests for new software.</p>
+  </div>
+  <p class="num">104</p>
+</section>
+
+<section class="slide">
+  <p class="label">REST OF METACENTRUM</p>
+  <h2>First week</h2>
+  <div class="body">
+    <ul>
+      <li>Port one real analysis</li>
+      <li>Not the biggest one</li>
+      <li>The one avoided because it takes all afternoon</li>
+    </ul>
+    <p class="quiet">The cheat sheet has every path and command from today.</p>
+  </div>
+  <p class="num">105</p>
+</section>
+
+<section class="slide">
+  <p class="label">QUESTIONS</p>
+  <h2>Questions</h2>
+  <div class="body">
+    <p class="quiet">Everything from today, including all solutions, is in the repository.</p>
+  </div>
+  <p class="num">106</p>
+</section>
+
+</div>
+
+<script>
+  // Arrow keys, space and page keys step between slides. Scrolling still works.
+  (function () {
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+
+    function current() {
+      var best = 0, bestD = Infinity;
+      slides.forEach(function (s, i) {
+        var d = Math.abs(s.getBoundingClientRect().top);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      return best;
+    }
+
+    function go(n) {
+      n = Math.max(0, Math.min(slides.length - 1, n));
+      slides[n].scrollIntoView({ block: 'start' });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var k = e.key;
+      if (k === 'ArrowRight' || k === 'ArrowDown' || k === 'PageDown' || k === ' ') {
+        e.preventDefault(); go(current() + 1);
+      } else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp') {
+        e.preventDefault(); go(current() - 1);
+      } else if (k === 'Home') {
+        e.preventDefault(); go(0);
+      } else if (k === 'End') {
+        e.preventDefault(); go(slides.length - 1);
+      }
+    });
+  })();
+</script>

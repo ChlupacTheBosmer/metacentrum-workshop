@@ -1,0 +1,78 @@
+#!/bin/bash
+#
+# ============================================================
+#  11_job_arrays/submit_array.pbs
+#  Thirty jobs from one file
+# ============================================================
+#
+#  HOW TO SEND IT
+#
+#      qsub -J 1-30 11_job_arrays/submit_array.pbs
+#
+#  The -J part is the whole trick. It says "run this 30 times".
+#  Each copy gets a different number, from 1 to 30, and can read
+#  its own number from the variable PBS_ARRAY_INDEX.
+#
+#  That is all a job array is. One script, many numbers.
+#
+#  WATCHING THEM
+#
+#      qstat -t -u $USER      the -t shows all 30 separately
+#
+#  DELETING THEM
+#
+#      qdel '23156948[]'      keep the square brackets
+#
+# ============================================================
+
+
+# ------------------------------------------------------------
+#  THE REQUEST
+#  These lines are read by the scheduler before the job starts.
+# ------------------------------------------------------------
+
+#PBS -N ws_replicates
+
+# Four cores, because we run four chains and want one core each.
+#PBS -l select=1:ncpus=4:mem=8gb:scratch_local=4gb
+
+# One hour is generous. A repeat takes a couple of minutes.
+#PBS -l walltime=01:00:00
+
+# Where the printed output goes. The ^array_index^ part is
+# replaced by this job's own number, so the 30 jobs write to 30
+# separate files instead of overwriting each other.
+#PBS -o logs/rep_^array_index^.out
+#PBS -e logs/rep_^array_index^.err
+
+
+# ------------------------------------------------------------
+#  THE WORK
+# ------------------------------------------------------------
+
+# Where the workshop files live.
+REPO=/storage/plzen1/home/chlupp/workshop/repo
+
+# The container that holds R and every package we need.
+IMAGE=/storage/plzen1/home/chlupp/workshop/images/workshop-r.sif
+
+echo "I am repeat: $PBS_ARRAY_INDEX"
+echo "Machine    : $(hostname)"
+echo ""
+
+cd "$REPO"
+
+# We run inside a container rather than loading an R module.
+#
+# Why: the plain R module on MetaCentrum has no packages at all,
+# and the RStudio image has no Stan. The container has both, at
+# fixed versions, and every one of the 30 jobs uses the same one.
+#
+# -B /storage lets the container see the shared filesystem.
+# Without it the job cannot find its own data.
+
+singularity exec -B /storage "$IMAGE" \
+    Rscript 11_job_arrays/fit_one_replicate.R "$PBS_ARRAY_INDEX"
+
+echo ""
+echo "Repeat $PBS_ARRAY_INDEX finished."
