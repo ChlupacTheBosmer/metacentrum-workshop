@@ -53,14 +53,14 @@ cat("============================================\n")
 cat("Fit 1: the real data\n")
 cat("============================================\n\n")
 
-real_data <- perturb_data(
-  df   = model_data,
-  seed = cfg$design$seed,
-  arm  = "signal"
-)
+# We fit the data exactly as it is. No resampling.
+#
+# The only thing that should differ between the two fits below is whether
+# the ratings match their reviews. Resampling first would add a second
+# difference and make the comparison less clean.
 
 fit_real <- fit_model(
-  dat        = prepare_stan_data(real_data),
+  dat        = prepare_stan_data(model_data),
   cores      = 4,
   chains     = 4,
   model_file = "09_model/model.stan"
@@ -79,6 +79,8 @@ cat("\n============================================\n")
 cat("Fit 2: ratings shuffled within each product\n")
 cat("============================================\n\n")
 
+# arm = "control" shuffles the ratings within each product. frac = 1 and no
+# n_target means every row is kept, so the only change is the shuffling.
 shuffled_data <- perturb_data(
   df   = model_data,
   seed = cfg$design$seed,
@@ -125,6 +127,10 @@ print(as.data.frame(comparison), digits = 3, row.names = FALSE)
 # ------------------------------------------------------------
 
 cat("\n")
+cat("A note on how much these numbers move:\n")
+cat("  tau[2] is estimated from only 25 products, so it is not pinned\n")
+cat("  down tightly. Its interval is wide and the middle of it moves\n")
+cat("  between samples. Read the interval, not the single number.\n\n")
 cat("On the real data:\n")
 cat("  beta[1] should be clearly away from zero\n")
 cat("  tau[2]  should be clearly above zero\n\n")
