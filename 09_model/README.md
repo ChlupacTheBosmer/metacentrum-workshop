@@ -45,7 +45,7 @@ Result: 9 of 9 inside their intervals, 0 divergences, rhat 1.010.
 source("09_model/fit_once.R")
 ```
 
-4000 rows, 25 products, 4 chains, about 40 seconds.
+4000 rows, 25 products, 4 chains, about 70 seconds on a compute node.
 
 Check **divergences** is 0 and **rhat** is under 1.01 before reading
 anything else. If either fails the numbers mean nothing.
@@ -66,7 +66,7 @@ A correct method must now find nothing:
 
 | | beta[1] | tau[2] |
 |---|---|---|
-| real | -1.56 | 0.26 |
-| shuffled | 0.04 | 0.06 |
+| real | -1.51 | 0.33 |
+| shuffled | 0.00 | 0.06 |
 
 One extra fit, and the most convincing check available.

@@ -27,9 +27,9 @@ fit_model(dat, cores = 4, chains = 4)
 
 | | |
 |---|---|
-| 1 core | 125.3 s |
-| 4 cores | 37.7 s |
-| speed up | 3.32 x |
+| 1 core | 266 s |
+| 4 cores | 82 s |
+| speed up | 3.26 x |
 
 ## Why not 4 times
 

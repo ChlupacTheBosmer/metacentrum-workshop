@@ -895,3 +895,41 @@ before the first push and passed.
 ### Slides
 Now 107. A bootstrap slide added to the Login section, and everything
 renumbered.
+
+---
+
+## Session 15 — 2026-08-27 (clean run on MetaCentrum)
+
+Cloned fresh from GitHub via `bootstrap.sh` to the participant location and
+ran everything runnable, in participant order.
+
+### Two bugs found, both fixed and pushed
+
+**1. `submit_array.pbs` hardcoded the presenter's path.** Every participant's
+array would have looked for the code in somebody else's home directory. Now
+takes the path from `$PBS_O_WORKDIR`, which PBS sets to the directory qsub
+was run from.
+
+**2. Every Stan script failed on its own with "CmdStan path has not been set
+yet".** It worked in RStudio only because `05_rstudio/setup_packages.R` had
+run first in that session. Run from a terminal or inside a job, nothing had
+set it. `src/stan_setup.R` now finds Stan in the container or the shared
+folder and sets it, and explains what to do if neither is there.
+
+### Slide numbers corrected
+The timings on the slides were measured on a laptop. Re-measured on a
+compute node they are slower, and the slides now say so:
+
+| | slide before | measured on cluster |
+|---|---|---|
+| fit_once | about 40 s | about 70 s |
+| cores 1 | 125.3 s | 266 s |
+| cores 4 | 37.7 s | 82 s |
+| speed up | 3.32 x | 3.26 x |
+
+The ratio held; the absolute times did not.
+
+### Also learned
+Running Stan on a frontend took 201 s for a fit that takes 70 s on a compute
+node, and frontends are shared. The heavy tests were moved to a job, which
+is both faster and what the documentation asks for.
