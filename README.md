@@ -68,7 +68,8 @@ method must find nothing.
 ## Rules of the repository
 
 - **Nothing infrastructure specific is hardcoded.** URLs, module names,
-  queue names, storage paths and model names live in `config.R` only
+  queue names, storage paths and model names live in `config.R`, and nowhere
+  else. Paths that must differ per person are built from the username
 - **No keys, anywhere.** They come from `$EINFRA_API_KEY`. Run
   `tools/check_secrets.sh` before committing
 - **Code is written to be read.** Plain language comments, no dense one
