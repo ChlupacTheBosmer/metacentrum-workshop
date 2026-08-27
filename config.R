@@ -349,3 +349,27 @@ cfg_require <- function(path) {
   }
   v
 }
+
+
+# =============================================================================
+# Make the shared packages visible
+# =============================================================================
+# The R that MetaCentrum provides has almost no packages installed. Ours were
+# installed once into a folder that everybody can read.
+#
+# .libPaths() is the list of folders R searches when you call library(). We put
+# the shared folder at the front of that list.
+#
+# This lives in config.R, at the bottom, because every script in the workshop
+# sources config.R before it does anything else. Putting it here means
+# library(cmdstanr) works no matter which script you run first, and no matter
+# how many times you restart R.
+#
+# Inside the workshop container the packages are already installed, so the
+# folder will not exist there and this quietly does nothing.
+
+if (dir.exists(cfg$modules$shared_rlibs) &&
+    !(cfg$modules$shared_rlibs %in% .libPaths())) {
+
+  .libPaths(c(cfg$modules$shared_rlibs, .libPaths()))
+}

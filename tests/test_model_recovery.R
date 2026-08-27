@@ -13,10 +13,13 @@
 # Usage:  Rscript tests/test_model_recovery.R [n_obs] [chains]
 # =============================================================================
 
+# config.R first. It makes the shared packages visible, so the library()
+# calls below can succeed.
+source("config.R")
+
 suppressPackageStartupMessages({ library(cmdstanr); library(posterior) })
 
 # Find Stan, the same way every other script does.
-source("config.R")
 source("src/stan_setup.R")
 ensure_stan_is_found()
 

@@ -31,6 +31,15 @@
 #' set it does nothing.
 ensure_stan_is_found <- function() {
 
+  if (!requireNamespace("cmdstanr", quietly = TRUE)) {
+    stop("The package cmdstanr is not available.\n",
+         "  R is looking for packages in:\n",
+         paste0("      ", .libPaths(), collapse = "\n"), "\n\n",
+         "  The shared folder should be one of those. Run this and try again:\n",
+         "      source(\"config.R\")\n",
+         call. = FALSE)
+  }
+
   suppressPackageStartupMessages(library(cmdstanr))
 
   # Is it already set? cmdstan_path() throws an error when it is
