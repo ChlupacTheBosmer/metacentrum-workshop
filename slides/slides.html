@@ -954,7 +954,9 @@ module purge               unload everything</code></pre>
       <li>Settings, Account, API keys</li>
       <li>Generate, then copy it</li>
     </ul>
-    <p>Put it in <code>~/.Renviron</code>, then restart R:</p>
+    <p>In the RStudio console:</p>
+    <pre><code>file.edit("~/.Renviron")</code></pre>
+    <p>The file is new and empty. Add one line, save, then Session, Restart R.</p>
     <pre><code>EINFRA_API_KEY=your_key_here</code></pre>
     <p><strong>Never in a script.</strong> Scripts get shared.</p>
   </div>

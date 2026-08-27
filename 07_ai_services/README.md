@@ -7,13 +7,23 @@
 1. <https://chat.ai.e-infra.cz>, log in with e-INFRA
 2. Try the chat once by hand
 3. Settings, Account, API keys, generate
-4. Put it in `~/.Renviron`:
+4. In the RStudio console:
+
+```r
+file.edit("~/.Renviron")
+```
+
+`~` is your home directory, which on MetaCentrum is something like
+`/storage/brno12-cerit/home/yourname`. The volume differs per account, which
+is why we write `~` instead of a full path.
+
+The file does not exist yet. RStudio opens it empty. Add one line and save:
 
 ```
 EINFRA_API_KEY=your_key_here
 ```
 
-5. Restart R: Session menu, Restart R
+5. Restart R: Session menu, Restart R. R only reads this file at startup.
 
 **Never put the key in a script.** Scripts get shared and committed.
 

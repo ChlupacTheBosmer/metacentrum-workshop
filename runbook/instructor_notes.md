@@ -278,6 +278,27 @@ Both are needed because installing these packages takes 10 to 60 minutes and
 sometimes fails. We installed them once, in advance, into a folder everybody
 can read.
 
+### Where `.Renviron` actually is
+
+`~` is the login home directory. On MetaCentrum that is
+`/storage/<volume>/home/<username>`, and **the volume differs per account**.
+One person's is `brno12-cerit`, another's might be `brno2`. That is why the
+instruction says `~` and not a literal path.
+
+Checked: `~` resolves to the same place in the shell and inside the RStudio
+container, so a key put there works in both.
+
+The file does not exist until somebody creates it. `file.edit("~/.Renviron")`
+opens a blank editor in RStudio and saving creates it.
+
+R reads it **only at startup**, hence the restart.
+
+One gotcha worth knowing but probably not worth saying: R looks for
+`.Renviron` in the current working directory *before* the home directory. If
+somebody has a stale one in the repository folder it will win. The
+`.gitignore` stops it ever being committed, so this only happens if they
+made one by hand.
+
 ### Why you must not pipe `module add`
 
 "Piping" means sending the output of one command into another, with `|`:
